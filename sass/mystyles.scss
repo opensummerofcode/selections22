@@ -1,0 +1,136 @@
+@charset "utf-8";
+@import "../node_modules/bulma/bulma.sass";
+
+
+// Layout
+
+html {
+  overflow: hidden;
+}
+
+.wrapper {
+  display: flex;
+  height: calc(100vh - 72px);
+}
+
+.main {
+  width: calc(100vw - 420px);
+  height: calc(100vh - 72px);
+  overflow: hidden;
+}
+
+
+// Main content
+
+.main .section-content {
+  width: 100%;
+  height: calc(100vh - 267px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.section {
+  padding: 1.5rem;
+}
+
+.section-head {
+  border-bottom: 2px $light solid;
+}
+
+
+// side menu
+
+.aside {
+  height: calc(100vh - 72px);
+  box-shadow: 2px 0 0 0 whitesmoke;
+  width: 420px;
+}
+
+.card .columns.is-gapless:not(:last-child) {
+  margin-bottom: 0;
+}
+
+.card .columns.is-gapless .column {
+  margin-bottom: 0.5rem !important;
+}
+
+.menu--filter {
+  box-shadow: 0 2px 0 0 whitesmoke;
+  padding-bottom: 1rem;
+  padding: 1rem;
+  height: 336px;
+}
+
+.cards-list {
+  padding: 1rem;
+  overflow-y: auto;
+  height: calc(100vh - 408px);
+
+  .card {
+    margin-bottom: 0.5rem;
+  }
+}
+
+
+// student list in side menu
+
+.card.is-active {
+  background-color: white;
+}
+
+.card.is-info {
+  border-bottom: 5px solid $info;
+}
+
+.card.is-warning {
+  border-bottom: 5px solid $warning;
+}
+
+.card.is-danger {
+  border-bottom: 5px solid $danger;
+}
+
+.card.is-dark {
+  border-bottom: 5px solid $dark;
+}
+
+.card.is-light {
+  border-bottom: 5px solid $light;
+}
+
+.cards-list .card-content {
+  padding: 0.75rem 0.75rem 0 0.75rem;
+}
+
+.card.is-draggable {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+
+  &:active {
+    cursor: move;
+  }
+
+  &:hover {
+    background-color: $light;
+  }
+}
+
+
+// elements
+
+.select select {
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+}
+
+li {
+  margin-bottom: 0.5rem;
+
+  &:last-child {
+    margin-bottom: none;
+  }
+}
+

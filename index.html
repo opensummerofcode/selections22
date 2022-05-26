@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="‪#FFFFFF" />
+    <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+    <meta name="theme-color" content="‪#FFFFFF" />
+
+    <title>#osoc selections</title>
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="https://osoc.be/favicons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="https://osoc.be/favicons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="https://osoc.be/favicons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="https://osoc.be/favicons/apple-touch-icon-76x76.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="https://osoc.be/favicons/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="https://osoc.be/favicons/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="https://osoc.be/favicons/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="https://osoc.be/favicons/apple-touch-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://osoc.be/favicons/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://osoc.be/favicons/android-chrome-192x192.png"
+      sizes="192x192"
+    />
+
+    <link rel="stylesheet" href="css/mystyles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="https://osoc.be/img/logo/logo-osoc-color.svg" width="80" height="28"> #osoc selections
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item is-active is-tab" href="#">
+            Suggest students
+          </a>
+          <a class="navbar-item" href="#">
+            Assign projects
+          </a>
+          <a class="navbar-item" href="#">
+            Student pipeline
+          </a>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="navbar-item">
+              <a class="navbar-item">
+                Manage users
+              </a>
+            </div>
+            <div class="buttons">
+              <a class="button">
+                Log out
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="wrapper">
+      <aside id="main-sidebar" class="aside has-shadow">
+        <nav class="menu active-menu--home menu--filter">
+          <p class="menu-label">40 of 80 students shown</p>
+          <ul class="menu-list">
+            <li>
+              <div class="field">
+                <!-- <label class="label">Search a student</label> -->
+                <p class="control has-icons-left has-icons-right">
+                  <input class="input" type="text" placeholder="Search a student by name">
+                  <span class="icon is-small is-left">
+                    <span class="material-icons">
+                      search
+                    </span>
+                  </span>
+                </p>
+              </div>
+
+              <div class="columns is-gapless">
+                <div class="column is-10">
+                  <div class="field">
+                    <!-- <label class="label">Select roles</label> -->
+                    <div class="select">
+                      <select>
+                        <option value="">Select roles</option>
+                        <option value="Front-end developer">Front-end developer</option>
+                        <option value="Back-end developer">Back-end developer</option>
+                        <option value="UI / UX desinger">UI / UX designer</option>
+                        <option value="Graphic designer">Graphic designer</option>
+                        <option value="Business">Business Modeller</option>
+                        <option value="Storyteller">Storyteller</option>
+                        <option value="Marketer">Marketer</option>
+                        <option value="Copywriter">Copywriter</option>
+                        <option value="Video editor">Video editor</option>
+                        <option value="Photographer">Photographer</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-2 has-text-right">
+                  <button class="button">
+                    <span class="icon is-small">
+                      <span class="material-icons">
+                        close
+                      </span>
+                    </span>
+                    <!-- <span>Clear</span> -->
+                  </button>
+                </div>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Only alumni
+                </label>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Only student coach volunteers
+                </label>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Only unmatched students
+                </label>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Show students I've suggested for
+                </label>
+              </div>
+              <div class="field">
+                <div class="buttons has-addons">
+                  <button class="button is-info is-small">
+                    Yes (20)
+                  </button>
+                  <button class="button is-warning is-small">
+                    </span>
+                    Maybe (20)
+                  </button>
+                  <button class="button is-outlined is-small">
+                    </span>
+                    No (20)
+                  </button>
+                  <button class="button is-light is-small">
+                    </span>
+                    Undecided
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <ul class="cards-list">
+          <li>
+            <div class="card is-draggable is-info has-background-link-light">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-6">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-6">
+                    <span class="tag is-info">
+                      3
+                    </span>
+                    <span class="tag is-warning">
+                      1
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                    <span class="tag is-light">
+                      Student coach
+                    </span>
+                    <span class="tag is-light">
+                      osoc alumnus
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+          <li>
+            <div class="card is-draggable is-dark">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-8">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-4">
+                    <span class="tag is-info">
+                      3
+                    </span>
+                    <span class="tag is-warning">
+                      1
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+          <li>
+            <div class="card is-draggable is-warning">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-8">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-4">
+                    <span class="tag is-info">
+                      3
+                    </span>
+                    <span class="tag is-warning">
+                      1
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+          <li>
+            <div class="card is-draggable is-light">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-8">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-4">
+                    <span class="tag is-info">
+                      0
+                    </span>
+                    <span class="tag is-warning">
+                      0
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- student detail page -->
+      <div id="main" class="main">
+        <div class="columns">
+          <div class="column">
+            <section class="section section-head">
+              <div class="columns">
+                <div class="column">
+                  <h1 class="title">
+                    Aaditya Pal
+                  </h1>
+                  <p class="subtitle">AKA Aad – He/Him</p>
+                  <p>
+                    <span class="tag">
+                      <span class="material-icons">
+                       work
+                      </span>&nbsp;
+                      Developer
+                    </span>
+                    <span class="tag">
+                      <span class="material-icons">
+                       school
+                      </span>&nbsp;
+                      Backend development
+                    </span>
+                  </p>
+                  <p>
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                    <span class="tag is-light">
+                      Student coach
+                    </span>
+                    <span class="tag is-light">
+                      osoc alumnus
+                    </span>
+                  </p>
+                </div>
+                <div class="column is-3">
+                  <label class="label">Suggest</label>
+                  <button class="button is-info">
+                    Yes
+                  </button>
+                  <button class="button is-warning">
+                    </span>
+                    Maybe
+                  </button>
+                  <button class="button is-dark">
+                    </span>
+                    No
+                  </button>
+                </div>
+
+                <div class="column is-3">
+                  <div class="field">
+                    <label class="label">Coordinator decision</label>
+                    <div class="select">
+                      <select>
+                        <option value="Screening - waiting for decision">Screening</option>
+                        <option value="No – rejected">No, rejected</option>
+                        <option value="Maybe, awaiting project">Maybe, awaiting project</option>
+                        <option value="Yes, awaiting project">Yes, awaiting project</option>
+                        <option value="Yes, assigned project">Yes, assigned project</option>
+                        <option value="Confirmed contract and project">Confirmed contract and project</option>
+                        <option value="No – rejected">Declined contract</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="section section-content">
+              <div class="columns">
+                <div class="column">
+                  <label class="label">Coach suggestions</label>
+                  <ul>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-3">
+                          <span class="tag is-info">
+                            Yes
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think so</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-3">
+                          <span class="tag is-info">
+                            Yes
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think so</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-3">
+                          <span class="tag is-warning">
+                            Maybe
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think maybe</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-3">
+                          <span class="tag is-dark">
+                            no
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think no</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="column">
+                  <div class="card">
+                    <div class="card-content">
+                      <ul>
+                        <li>
+                          <div class="columns is-gapless">
+                            <div class="column">
+                              <label class="label">Join live on-site</label>
+                              <p>Yes</p>
+                            </div>
+                            <div class="column">
+                              <label class="label">Work 09:00-17:00</label>
+                              <p>Yes</p>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <label class="label">Work 128 hours</label>
+                          <p>No, I won’t be able to work as a student, as a volunteer or for free.</p>
+                        </li>
+                        <li>
+                          <label class="label">Responsibilities during the day</label>
+                          <p>-</p>
+                        </li>
+                        <li>
+                          <div class="columns is-gapless">
+                            <div class="column">
+                              <label class="label">Student coach</label>
+                              <p>Yes</p>
+                            </div>
+                            <div class="column">
+                              <label class="label">Work 09:00-17:00</label>
+                              <p>Yes</p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="columns is-multiline">
+                <div class="column">
+                  <div class="card">
+                    <div class="card-content">
+                      <div class="columns">
+                        <div class="column">
+                          <h2 class="subtitle">Academia</h2>
+                        </div>
+                        <div class="column">
+                          <span class="tag">
+                            KUL
+                          </span>
+                        </div>
+                      </div>
+                      <div class="columns is-multiline">
+                        <div class="column">
+                          <ul>
+                            <li>
+                              <label class="label">Studies</label>
+                              <p>Taal- en letterkunde</p>
+                            </li>
+                            <li>
+                              <label class="label">Degree</label>
+                              <p>Bachelor</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="column">
+                          <ul>
+                            <li>
+                              <label class="label">Duration of degree</label>
+                              <p>3 year(s)</p>
+                            </li>
+                            <li>
+                              <label class="label">Current year of degree</label>
+                              <p>1</p>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-half">
+                  <div class="card">
+                    <div class="card-content">
+                      <h2 class="subtitle">Skills</h2>
+                      <div class="columns">
+                        <div class="column">
+                          <ul>
+                            <li>
+                              <label class="label">Best skill</label>
+                              <p>Photography</p>
+                            </li>
+                            <li>
+                              <label class="label">Most fluent language</label>
+                              <p>French</p>
+                            </li>
+                            <li>
+                              <label class="label">English proficiency</label>
+                              <p>★★★★★ I am fluent</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="column">
+                          <!-- Link to upload or the link they provided -->
+                          <a class="button is-primary" href="#">
+                            <span class="icon is-small">
+                              <span class="material-icons">
+                                download
+                              </span>
+                            </span>
+                            <span>Download CV</span>
+                          </a>
+                          <p>link-to-the-file.pdf</p>
+                          <br>
+                          <!-- Link to upload or the link they provided -->
+                          <a class="button is-primary" href="#">
+                            <span class="icon is-small">
+                              <span class="material-icons">
+                                download
+                              </span>
+                            </span>
+                            <span>Download portfolio</span>
+                          </a>
+                          <p>link-to-the-file.pdf</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="column is-full">
+                  <div class="card">
+                    <div class="card-content">
+                      <div class="columns">
+                        <div class="column">
+                          <h2 class="subtitle">Motivation</h2>
+                        </div>
+                        <div class="column is-4 has-text-right">
+                          <!-- Link to upload or the link they provided -->
+                          <a class="button is-primary" href="#">
+                            <span class="icon is-small">
+                              <span class="material-icons">
+                                download
+                              </span>
+                            </span>
+                            <span>Download motivation</span>
+                          </a>
+                          <p>link-to-the-file.pdf</p>
+                        </div>
+                      </div>
+                      <label class="label">Written motivation</label>
+                      <p>Respected mentor, I am Someone and I am a student currently pursuing my 4th semester as a bachelor in the field of Computer Systems. I have always been an enthusiast and contributor in our group projects in the university. I always like to work as a team member and contribute to the best level of my skill. Its fun and polishes my technical skills while contributing to the team. I am interested to work on open source projects but I missed applying to most of them due to pandemic. I would love to contribute to real-world open source because we have an option to work online. I think the best way to move forward would be to get practical working experience in an established platform, that is your company. I wish to learn, upskill, and acquire skills that can shape me as a valued professional in this field. Open Summer of Code is unique because it provides opportunities for students from various fields which indeed leads to the formation of unique teams with amazing mentors to collaborate with. When students from different fields collaborate the outcomes would reach beyond expectations. I would love to grab this opportunity to give and to make the best of my skill set.</p>
+                      <br>
+                      <label class="label">Fun fact</label>
+                      <p>Respected mentor, I am Someone and I am a student currently pursuing my 4th semester as a bachelor in the field of Computer Systems. I have always been an enthusiast and contributor in our group projects in the university. I always like to work as a team member and contribute to the best level of my skill. Its fun and polishes my technical skills while contributing to the team. I am interested to work on open source projects but I missed applying to most of them due to pandemic. I would love to contribute to real-world open source because we have an option to work online. I think the best way to move forward would be to get practical working experience in an established platform, that is your company. I wish to learn, upskill, and acquire skills that can shape me as a valued professional in this field. Open Summer of Code is unique because it provides opportunities for students from various fields which indeed leads to the formation of unique teams with amazing mentors to collaborate with. When students from different fields collaborate the outcomes would reach beyond expectations. I would love to grab this opportunity to give and to make the best of my skill set.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
