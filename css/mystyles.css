@@ -7964,3 +7964,6 @@ li {
   margin-bottom: 0.5rem; }
   li:last-child {
     margin-bottom: none; }
+
+.dropdown-menu {
+  width: 25rem; }
