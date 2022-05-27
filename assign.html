@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="‪#FFFFFF" />
+    <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+    <meta name="theme-color" content="‪#FFFFFF" />
+
+    <title>#osoc selections</title>
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="https://osoc.be/favicons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="https://osoc.be/favicons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="https://osoc.be/favicons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="https://osoc.be/favicons/apple-touch-icon-76x76.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="https://osoc.be/favicons/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="https://osoc.be/favicons/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="https://osoc.be/favicons/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="https://osoc.be/favicons/apple-touch-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://osoc.be/favicons/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://osoc.be/favicons/android-chrome-192x192.png"
+      sizes="192x192"
+    />
+
+    <link rel="stylesheet" href="css/mystyles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="https://osoc.be/img/logo/logo-osoc-color.svg" width="80" height="28"> #osoc selections
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="#">
+            Suggest students
+          </a>
+          <a class="navbar-item is-active is-tab" href="#">
+            Assign projects
+          </a>
+          <a class="navbar-item" href="#">
+            Student pipeline
+          </a>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="navbar-item">
+              <a class="navbar-item">
+                Manage users
+              </a>
+            </div>
+            <div class="buttons">
+              <a class="button">
+                Log out
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="wrapper">
+      <aside id="main-sidebar" class="aside has-shadow">
+        <nav class="menu active-menu--home menu--filter">
+          <p class="menu-label">40 of 80 students shown</p>
+          <ul class="menu-list">
+            <li>
+              <div class="field">
+                <!-- <label class="label">Search a student</label> -->
+                <p class="control has-icons-left has-icons-right">
+                  <input class="input" type="text" placeholder="Search a student by name">
+                  <span class="icon is-small is-left">
+                    <span class="material-icons">
+                      search
+                    </span>
+                  </span>
+                </p>
+              </div>
+
+              <div class="columns is-gapless">
+                <div class="column is-10">
+                  <div class="field">
+                    <!-- <label class="label">Select roles</label> -->
+                    <div class="select">
+                      <select>
+                        <option value="">Select roles</option>
+                        <option value="Front-end developer">Front-end developer</option>
+                        <option value="Back-end developer">Back-end developer</option>
+                        <option value="UI / UX desinger">UI / UX designer</option>
+                        <option value="Graphic designer">Graphic designer</option>
+                        <option value="Business">Business Modeller</option>
+                        <option value="Storyteller">Storyteller</option>
+                        <option value="Marketer">Marketer</option>
+                        <option value="Copywriter">Copywriter</option>
+                        <option value="Video editor">Video editor</option>
+                        <option value="Photographer">Photographer</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-2 has-text-right">
+                  <button class="button">
+                    <span class="icon is-small">
+                      <span class="material-icons">
+                        close
+                      </span>
+                    </span>
+                    <!-- <span>Clear</span> -->
+                  </button>
+                </div>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Only alumni
+                </label>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Only student coach volunteers
+                </label>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Only unmatched students
+                </label>
+              </div>
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Show students I've suggested for
+                </label>
+              </div>
+              <div class="field">
+                <div class="buttons has-addons">
+                  <button class="button is-info is-small">
+                    Yes (20)
+                  </button>
+                  <button class="button is-warning is-small">
+                    </span>
+                    Maybe (20)
+                  </button>
+                  <button class="button is-outlined is-small">
+                    </span>
+                    No (20)
+                  </button>
+                  <button class="button is-light is-small">
+                    </span>
+                    Undecided
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <ul class="cards-list">
+          <li>
+            <div class="card is-draggable is-info has-background-link-light">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-6">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-6">
+                    <span class="tag is-info">
+                      3
+                    </span>
+                    <span class="tag is-warning">
+                      1
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                    <span class="tag is-light">
+                      Student coach
+                    </span>
+                    <span class="tag is-light">
+                      osoc alumnus
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+          <li>
+            <div class="card is-draggable is-dark">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-8">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-4">
+                    <span class="tag is-info">
+                      3
+                    </span>
+                    <span class="tag is-warning">
+                      1
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+          <li>
+            <div class="card is-draggable is-warning">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-8">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-4">
+                    <span class="tag is-info">
+                      3
+                    </span>
+                    <span class="tag is-warning">
+                      1
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+          <li>
+            <div class="card is-draggable is-light">
+              <header class="card-content">
+                <div class="columns is-gapless">
+                  <div class="column is-8">
+                    <p class="subtitle">
+                      <b>Aaditya Pal</b>
+                    </p>
+                  </div>
+                  <div class="column has-text-right is-4">
+                    <span class="tag is-info">
+                      0
+                    </span>
+                    <span class="tag is-warning">
+                      0
+                    </span>
+                    <span class="tag is-dark">
+                      0
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns is-gapless">
+                  <div class="column">
+                    <p>
+                      <span class="tag">
+                        <span class="material-icons">
+                         work
+                        </span>&nbsp;
+                        Developer
+                      </span>
+                      <span class="tag">
+                        <span class="material-icons">
+                         school
+                        </span>&nbsp;
+                        Backend development
+                      </span>
+                    </p>
+                  </div>
+                  <div class="column has-text-right">
+                    <span class="tag is-light">
+                      project-name
+                    </span>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- project overview -->
+      <div id="main" class="main">
+        <section class="section">
+          <div class="columns">
+            <div class="column">
+              <div class="card">
+                <header class="card-content">
+                  <div class="columns is-gapless">
+                    <div class="column is-7">
+                      <p class="title">
+                        <a href="https://help.osoc.be/osoc22/projects-partners/abb-mow-awv" target="_blank">
+                          BeBudget 2.0&nbsp;<span class="material-icons">link</span>
+                        </a>
+                      </p>
+                      <p class="subtitle">
+                        BOSA
+                      </p>
+                      <div>
+                        <span class="tag">
+                          Bert
+                        </span>
+                        <span class="tag">
+                          Michiel
+                        </span>
+                      </div>
+                    </div>
+                    <div class="column has-text-right is-5">
+                      <span class="tag">
+                        <b>1x full-stack developer</b>
+                      </span>
+                      <br>
+                      <span class="tag">
+                        <b>2x communication</b>
+                      </span>
+                      <br>
+                      <span class="tag">
+                        <b>1x data scientist</b>
+                      </span>
+                      <br>
+                      <span class="tag">
+                        <b>2x designers</b>
+                      </span>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <div class="columns is-multiline is-gapless">
+                    <div class="column">
+                      <p>
+                        <b><a>Aaditya Pal</a></b>
+                        <span class="tag">
+                          Data scientist
+                        </span>
+                      </p>
+                      <p>
+                        By Miet: reason
+                      </p>
+                    </div>
+                    <div class="column is-2 has-text-right">
+                      <button class="button">
+                        <span class="icon is-small">
+                          <span class="material-icons">
+                            close
+                          </span>
+                        </span>
+                        <!-- <span>Clear</span> -->
+                      </button>
+                    </div>
+                  </div>
+                  <hr>
+                  <div>
+                    <div class="columns is-multiline is-gapless">
+                      <div class="column">
+                        <p>
+                          <b><a>Aaditya Pal</a></b>
+                          <span class="tag">
+                            Data scientist
+                          </span>
+                          <span class="tag">
+                            Alumn
+                          </span>
+                        </p>
+                        <p>
+                          By Miet: reason
+                        </p>
+                      </div>
+                      <div class="column is-2 has-text-right">
+                        <button class="button">
+                          <span class="icon is-small">
+                            <span class="material-icons">
+                              close
+                            </span>
+                          </span>
+                          <!-- <span>Clear</span> -->
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="buttons">
+                    <a class="button">
+                      Edit
+                    </a>
+                  </div>
+                </header>
+              </div>
+            </div>
+            <div class="column">
+              <div class="card">
+                <header class="card-content">
+                  <div class="columns is-gapless">
+                    <div class="column is-7">
+                      <p class="title">
+                        <a href="https://help.osoc.be/osoc22/projects-partners/abb-mow-awv" target="_blank">
+                          BeBudget 2.0&nbsp;<span class="material-icons">link</span>
+                        </a>
+                      </p>
+                      <p class="subtitle">
+                        BOSA
+                      </p>
+                      <div>
+                        <span class="tag">
+                          Bert
+                        </span>
+                        <span class="tag">
+                          Michiel
+                        </span>
+                      </div>
+                    </div>
+                    <div class="column has-text-right is-5">
+                      <span class="tag">
+                        <b>1x full-stack developer</b>
+                      </span>
+                      <br>
+                      <span class="tag">
+                        <b>2x communication</b>
+                      </span>
+                      <br>
+                      <span class="tag">
+                        <b>1x data scientist</b>
+                      </span>
+                      <br>
+                      <span class="tag">
+                        <b>2x designers</b>
+                      </span>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <div class="columns is-multiline is-gapless">
+                    <div class="column">
+                      <p>
+                        <b><a>Aaditya Pal</a></b>
+                        <span class="tag">
+                          Data scientist
+                        </span>
+                      </p>
+                      <p>
+                        By Miet: reason
+                      </p>
+                    </div>
+                    <div class="column is-2 has-text-right">
+                      <button class="button">
+                        <span class="icon is-small">
+                          <span class="material-icons">
+                            close
+                          </span>
+                        </span>
+                        <!-- <span>Clear</span> -->
+                      </button>
+                    </div>
+                  </div>
+                  <hr>
+                  <div>
+                    <div class="columns is-multiline is-gapless">
+                      <div class="column">
+                        <p>
+                          <b><a>Aaditya Pal</a></b>
+                          <span class="tag">
+                            Data scientist
+                          </span>
+                          <span class="tag">
+                            Alumn
+                          </span>
+                        </p>
+                        <p>
+                          By Miet: reason
+                        </p>
+                      </div>
+                      <div class="column is-2 has-text-right">
+                        <button class="button">
+                          <span class="icon is-small">
+                            <span class="material-icons">
+                              close
+                            </span>
+                          </span>
+                          <!-- <span>Clear</span> -->
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="buttons">
+                    <a class="button">
+                      Edit
+                    </a>
+                  </div>
+                </header>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+    </div>
+    <div class="modal is-active">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Draft Abanoub for Bebudget 2.0</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <label class="label">Which role are you drafting Abanoub for?</label>
+          <div class="field">
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="answer">
+                <b>1x full-stack developer</b>
+              </label>
+              <br>
+              <label class="radio">
+                <input type="radio" name="answer">
+                <b>2x communication</b>
+              </label>
+              <br>
+              <label class="radio">
+                <input type="radio" name="answer">
+                <b>1x data scientist</b>
+              </label>
+              <br>
+              <label class="radio">
+                <input type="radio" name="answer">
+                <b>2x designers</b>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Why is this student a good fit for your team?</label>
+            <textarea class="textarea" placeholder="provide a reason"></textarea>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Draft to project</button>
+          <button class="button">Cancel</button>
+          <p>You can still remove them from the team later.</p>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
