@@ -7894,6 +7894,12 @@ html {
   overflow-y: auto;
   overflow-x: hidden; }
 
+.main-split .section {
+  width: 100%;
+  height: calc(100vh - 72px);
+  overflow-y: auto;
+  overflow-x: hidden; }
+
 .section {
   padding: 1.5rem; }
 
@@ -7967,3 +7973,6 @@ li {
 
 .dropdown-menu {
   width: 25rem; }
+
+.main-split {
+  display: flex; }
