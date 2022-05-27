@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="‪#FFFFFF" />
+    <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+    <meta name="theme-color" content="‪#FFFFFF" />
+
+    <title>#osoc selections</title>
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="https://osoc.be/favicons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="https://osoc.be/favicons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="https://osoc.be/favicons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="https://osoc.be/favicons/apple-touch-icon-76x76.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="https://osoc.be/favicons/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="https://osoc.be/favicons/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="https://osoc.be/favicons/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="https://osoc.be/favicons/apple-touch-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://osoc.be/favicons/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://osoc.be/favicons/android-chrome-192x192.png"
+      sizes="192x192"
+    />
+
+    <link rel="stylesheet" href="css/mystyles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="https://osoc.be/img/logo/logo-osoc-color.svg" width="80" height="28"> #osoc selections
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="#">
+            Select students
+          </a>
+          <a class="navbar-item" href="#">
+            Student pipeline
+          </a>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="navbar-item">
+              <a class="navbar-item">
+                Manage users
+              </a>
+            </div>
+            <div class="buttons">
+              <a class="button">
+                Log out
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="wrapper">
+      <!-- pipeline overview -->
+      <div id="main" class="main main-split">
+        <section class="section">
+          <div class="field">
+            <!-- <label class="label">Search a student</label> -->
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="text" placeholder="Search by name">
+              <span class="icon is-small is-left">
+                <span class="material-icons">
+                  search
+                </span>
+              </span>
+            </p>
+          </div>
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Email
+                </th>
+                <th>
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status </th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>Name Last Name</td>
+                <td>name@address.com</td>
+                <td>
+                  <div class="field">
+                    <div class="select">
+                      <select>
+                        <option value="Coordinator">Coordinator</option>
+                        <option value="Coach">Coach</option>
+                        <option value="No access">No access</option>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Name Last Name</td>
+                <td>name@address.com</td>
+                <td>
+                  <div class="field">
+                    <div class="select">
+                      <select>
+                        <option value="Coordinator">Coordinator</option>
+                        <option value="Coach">Coach</option>
+                        <option value="No access">No access</option>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+    </div>
+
+  </body>
+</html>
