@@ -7900,6 +7900,21 @@ html {
   overflow-y: auto;
   overflow-x: hidden; }
 
+.main-split {
+  display: flex; }
+
+.main-sectioned {
+  width: 100%;
+  height: calc(100vh - 72px);
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column; }
+  .main-sectioned .section:first-child {
+    height: calc(100vh - 168px);
+    overflow-y: auto;
+    border-bottom: 2px solid whitesmoke; }
+
 .section {
   padding: 1.5rem; }
 
@@ -7975,5 +7990,5 @@ li {
 .dropdown-menu {
   width: 25rem; }
 
-.main-split {
-  display: flex; }
+.dropdown-content {
+  padding: 1rem; }

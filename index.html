@@ -79,7 +79,7 @@
           <div class="navbar-item">
             <div class="navbar-item">
               <a class="navbar-item">
-                Manage users
+                Manage members
               </a>
             </div>
             <div class="buttons">
@@ -410,8 +410,8 @@
             <div class="column">
               <h1 class="title">
                 Aaditya Pal
+                <span class="subtitle">AKA Aad – He/Him</span>
               </h1>
-              <p class="subtitle">AKA Aad – He/Him</p>
               <p>
                 <span class="tag">
                   <span class="material-icons">
@@ -438,6 +438,8 @@
                   Front-end development
                 </span>
               </p>
+            </div>
+            <div class="column is-4">
               <p>
                 <span class="tag is-light">
                   project-name
@@ -450,112 +452,116 @@
                 </span>
               </p>
             </div>
-            <div class="column is-3">
-              <label class="label">Suggest</label>
-              <div class="dropdown is-active">
-                <div class="dropdown-trigger">
-                  <button class="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
-                    <span>Yes</span>
-                  </button>
-                </div>
-                <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-                  <div class="dropdown-content">
-                    <section class="section">
-                      <div class="field">
-                        <h1 class="label">Suggest yes</h1>
-                        <textarea class="textarea" placeholder="provide a reason"></textarea>
-                        <p>This will open up discussion and help us and your fellow coaches understand.</p>
-                      </div>
-                      <button class="button is-info">
-                        <span>Suggest yes</span>
-                      </button>
-                    </section>
-                  </div>
-                </div>
-              </div>
 
-              <button class="button is-warning">
-                </span>
-                Maybe
-              </button>
-              <button class="button is-dark">
-                </span>
-                No
-              </button>
-            </div>
-
-            <div class="column is-3">
-              <div class="field">
-                <label class="label">Coordinator decision</label>
-                <div class="select">
-                  <select>
-                    <option value="Screening - waiting for decision">Screening</option>
-                    <option value="No – rejected">No, rejected</option>
-                    <option value="Maybe, awaiting project">Maybe, awaiting project</option>
-                    <option value="Yes, awaiting project">Yes, awaiting project</option>
-                    <option value="Yes, assigned project">Yes, assigned project</option>
-                    <option value="Confirmed contract and project">Confirmed contract and project</option>
-                    <option value="No – rejected">Declined contract</option>
-                  </select>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
         <section class="section section-content">
           <div class="columns">
             <div class="column">
-              <label class="label">Coach suggestions</label>
-              <ul>
-                <li>
-                  <div class="columns">
-                    <div class="column is-3">
-                      <span class="tag is-info">
-                        Yes
-                      </span>
+
+              <div class="card">
+                <div class="card-content">
+                  <label class="label">Suggest</label>
+                  <div class="field">
+                    <div class="dropdown">
+                      <div class="dropdown-trigger">
+                        <button class="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
+                          <span>Yes</span>
+                        </button>
+                      </div>
+                      <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                        <div class="dropdown-content">
+                          <section class="section">
+                            <div class="field">
+                              <h1 class="label">Suggest yes</h1>
+                              <textarea class="textarea" placeholder="provide a reason"></textarea>
+                              <p>This will open up discussion and help us and your fellow coaches understand.</p>
+                            </div>
+                            <button class="button is-info">
+                              <span>Suggest yes</span>
+                            </button>
+                          </section>
+                        </div>
+                      </div>
                     </div>
-                    <div class="column">
-                      <p>John: I think so</p>
+                    <button class="button is-warning">
+                      </span>
+                      Maybe
+                    </button>
+                    <button class="button is-dark">
+                      </span>
+                      No
+                    </button>
+                  </div>
+
+                  <ul>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-1">
+                          <span class="tag is-info">
+                            Y
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think so</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-1">
+                          <span class="tag is-info">
+                            Y
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think so</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-1">
+                          <span class="tag is-warning">
+                            M
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think maybe</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="columns">
+                        <div class="column is-1">
+                          <span class="tag is-dark">
+                            N
+                          </span>
+                        </div>
+                        <div class="column">
+                          <p>John: I think no</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <br>
+                  <div class="field">
+                    <label class="label">Coordinator decision</label>
+                    <div class="select">
+                      <select>
+                        <option value="Screening - waiting for decision">Screening</option>
+                        <option value="No – rejected">No, rejected</option>
+                        <option value="Maybe, awaiting project">Maybe, awaiting project</option>
+                        <option value="Yes, awaiting project">Yes, awaiting project</option>
+                        <option value="Yes, assigned project">Yes, assigned project</option>
+                        <option value="Confirmed contract and project">Confirmed contract and project</option>
+                        <option value="No – rejected">Declined contract</option>
+                      </select>
                     </div>
                   </div>
-                </li>
-                <li>
-                  <div class="columns">
-                    <div class="column is-3">
-                      <span class="tag is-info">
-                        Yes
-                      </span>
-                    </div>
-                    <div class="column">
-                      <p>John: I think so</p>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="columns">
-                    <div class="column is-3">
-                      <span class="tag is-warning">
-                        Maybe
-                      </span>
-                    </div>
-                    <div class="column">
-                      <p>John: I think maybe</p>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="columns">
-                    <div class="column is-3">
-                      <span class="tag is-dark">
-                        no
-                      </span>
-                    </div>
-                    <div class="column">
-                      <p>John: I think no</p>
-                    </div>
-                  </div>
-                </li>
-              </ul>
+                </div>
+              </div>
+
             </div>
             <div class="column">
               <div class="card">

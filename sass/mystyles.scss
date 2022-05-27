@@ -34,7 +34,25 @@ html {
   height: calc(100vh - 72px);
   overflow-y: auto;
   overflow-x: hidden;
+}
 
+.main-split {
+  display: flex;
+}
+
+.main-sectioned {
+  width: 100%;
+  height: calc(100vh - 72px);
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .section:first-child {
+    height: calc(100vh - 168px);
+    overflow-y: auto;
+    border-bottom: 2px solid $light;
+  }
 }
 
 .section {
@@ -147,6 +165,6 @@ li {
   width: 25rem;
 }
 
-.main-split {
-  display: flex;
+.dropdown-content {
+  padding: 1rem;
 }
