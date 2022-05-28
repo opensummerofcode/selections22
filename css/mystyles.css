@@ -8002,3 +8002,7 @@ li {
 .tag a {
   color: white;
   text-decoration: underline; }
+
+.register {
+  margin-top: 10rem;
+  background: white; }
