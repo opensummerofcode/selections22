@@ -57,6 +57,7 @@ html {
 
 .section {
   padding: 1.5rem;
+  position: relative;
 }
 
 .section-head {
@@ -161,10 +162,21 @@ li {
   }
 }
 
-.dropdown-menu {
+.dropdown-item {
   width: 25rem;
 }
 
-.dropdown-content {
-  padding: 1rem;
+.dropdown.dropdown--right {
+  position: initial;
+}
+
+.dropdown-menu.dropdown-menu--right {
+  width: 100%;
+  top: 70px;
+  right: 0;
+}
+
+.tag a {
+  color: $white;
+  text-decoration: underline;
 }

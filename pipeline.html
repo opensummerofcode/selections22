@@ -104,7 +104,7 @@
               <div class="dropdown is-active has-text-left">
                 <div class="dropdown-trigger">
                   <button class="button is-info" aria-haspopup="true" aria-controls="dropdown-menu3">
-                    <span>Bulk actions</span>
+                    <span>Bulk assign</span>
                   </button>
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu3" role="menu">
@@ -112,7 +112,7 @@
                     <a href="#" class="dropdown-item">
                       Undecided - screening
                     </a>
-                    <a href="#" class="dropdown-item is-active">
+                    <a href="#" class="dropdown-item">
                       Maybe – Awaiting project
                     </a>
                     <a class="dropdown-item">
@@ -122,11 +122,14 @@
                       Yes – Assigned project
                     </a>
                     <a href="#" class="dropdown-item">
-                      Confirmed - signed contract
+                      Confirmed - signed contract and confirmed project
                     </a>
-                    <hr class="dropdown-divider is-danger">
                     <a href="#" class="dropdown-item">
-                      Remove from selection
+                      Declined contract
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="#" class="dropdown-item">
+                      Remove from selection overview
                     </a>
                   </div>
                 </div>
@@ -151,7 +154,11 @@
           <table class="table is-fullwidth">
             <thead>
               <tr>
-                <th></th>
+                <th>
+                  <label class="checkbox">
+                    <input type="checkbox">
+                  </label>
+                </th>
                 <th>
                   Name
                   <a class="">

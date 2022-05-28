@@ -7916,7 +7916,8 @@ html {
     border-bottom: 2px solid whitesmoke; }
 
 .section {
-  padding: 1.5rem; }
+  padding: 1.5rem;
+  position: relative; }
 
 .section-head {
   border-bottom: 2px whitesmoke solid; }
@@ -7987,8 +7988,17 @@ li {
   li:last-child {
     margin-bottom: none; }
 
-.dropdown-menu {
+.dropdown-item {
   width: 25rem; }
 
-.dropdown-content {
-  padding: 1rem; }
+.dropdown.dropdown--right {
+  position: initial; }
+
+.dropdown-menu.dropdown-menu--right {
+  width: 100%;
+  top: 70px;
+  right: 0; }
+
+.tag a {
+  color: white;
+  text-decoration: underline; }
