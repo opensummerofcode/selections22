@@ -1,0 +1,33 @@
+/* Bulma utilities and initial variables. */
+@import "~bulma/sass/utilities/functions";
+@import "~bulma/sass/utilities/initial-variables";
+@import "~buefy/src/scss/utils/all";
+
+$info: #3e8ed0;
+
+// Set your colors
+// $primary: #f14a3b;
+// $primary-light: findLightColor($primary);
+// $primary-dark: findDarkColor($primary);
+// $primary-invert: findColorInvert($primary);
+
+$colors: (
+    "info": (
+        $info,
+        $white,
+    ),
+    // "primary": (
+    //     $primary,
+    //     $primary-invert,
+    //     $primary-light,
+    //     $primary-dark,
+    // ),
+);
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+.rate .rate-item.set-on .icon{
+    color: $dark;
+}

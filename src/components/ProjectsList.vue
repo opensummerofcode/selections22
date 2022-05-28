@@ -1,0 +1,59 @@
+<template>
+    <div class="p-1 projects-list" :class="{ 'is-full': true }">
+        <div class="is-flex is-justify-content-space-between mx-5 mt-4 mb-0">
+            <h1 class="has-text-weight-bold is-size-4">
+                Projects
+            </h1>
+            <div class="has-text-right">
+                <b-tabs
+                    v-model="conflictsToggle"
+                    type="is-toggle-rounded"
+                    size="is-small"
+                >
+                    <b-tab-item value="projects" label="Projects" />
+                    <b-tab-item value="conflicts" label="Conflicts (1)" />
+                </b-tabs>
+            </div>
+        </div>
+        <div
+            v-if="conflictsToggle === 'projects'"
+            class="projects-grid"
+            :class="{ 'is-fullscreen px-4': !selectedStudent }"
+        >
+            <project-card />
+            <project-card />
+            <project-card />
+            <project-card />
+        </div>
+    </div>
+</template>
+<script>
+import ProjectCard from './ProjectCard.vue'
+import { mapGetters } from 'vuex'
+
+export default {
+    name: 'ProjectsList',
+    components: { ProjectCard },
+    data() {
+        return {
+            conflictsToggle: 'projects',
+        }
+    },
+    computed: {
+        ...mapGetters(['selectedStudent']),
+    },
+}
+</script>
+<style lang="scss" scoped>
+.projects-list {
+    overflow: scroll;
+}
+
+.projects-grid {
+    &.is-fullscreen {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+}
+</style>
