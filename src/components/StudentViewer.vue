@@ -126,6 +126,7 @@
                             <b-button
                                 class="is-flex-grow-0"
                                 @click="removeSuggestion(suggestion['@id'])"
+                                v-if="isMySuggestion(suggestion)"
                             >
                                 <b-icon icon="close" />
                             </b-button>
@@ -404,7 +405,7 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import SuggestionModal from './SuggestionModal.vue'
 import tools from '../utils/tools'
 
@@ -510,6 +511,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions(['addSuggestion', 'deleteSuggestion']),
         suggestionType(suggestion) {
             if (suggestion.status.toUpperCase() === 'YES') return 'is-info'
             if (suggestion.status.toUpperCase() === 'MAYBE') return 'is-warning'
@@ -519,6 +521,9 @@ export default {
             if (suggestion.status.toUpperCase() === 'YES') return 'Y'
             if (suggestion.status.toUpperCase() === 'MAYBE') return 'M'
             if (suggestion.status.toUpperCase() === 'NO') return 'N'
+        },
+        isMySuggestion(suggestion) {
+            return suggestion.coach['@id'] === `/api/users/${this.getUser.id}`
         },
         updateSuggestionReason(val) {
             this.suggestionReason = val
@@ -536,7 +541,10 @@ export default {
                 coach: `api/users/${this.getUser.id}`,
             }
             this.$axios.post('/api/suggestions', body).then((res) => {
-                console.log({ res })
+                const suggestion = res.data
+                suggestion.coach = this.getUser
+                suggestion.coach['@id'] = `/api/users/${this.getUser.id}`
+                this.addSuggestion(suggestion)
             })
         },
         updateStudentStatus(status) {
@@ -544,7 +552,9 @@ export default {
             this.$axios.put(`/api/applicants/${this.student.id}`, body)
         },
         removeSuggestion(id) {
-            this.$axios.delete(id)
+            this.$axios.delete(id).then((res) => {
+                this.deleteSuggestion(id)
+            })
         },
         openUrl(url) {
             window.open(url, '_blank').focus()

@@ -228,7 +228,7 @@ export default {
             this.student_filters.roles = []
         },
         showStudent(student) {
-            this.SET_SELECTED_STUDENT(student)
+            this.SET_SELECTED_STUDENT(student['@id'])
         },
     },
 }

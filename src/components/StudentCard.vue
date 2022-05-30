@@ -110,7 +110,10 @@ export default {
             return nos.length
         },
         isSelected() {
-            return this.selectedStudent?.id === this.student.id
+            return (
+                this.selectedStudent &&
+                this.selectedStudent['@id'] === this.student['@id']
+            )
         },
         callname() {
             return tools.isEmptyStr(this.student.callname)

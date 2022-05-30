@@ -25,7 +25,9 @@ export default new Vuex.Store({
             return state.showProjects
         },
         selectedStudent(state) {
-            return state.selectedStudent
+            return state.students.find(
+                (student) => student['@id'] == state.selectedStudent
+            )
         },
         allStudents(state) {
             return state.students
@@ -42,9 +44,11 @@ export default new Vuex.Store({
             state.showProjects = value
         },
         SET_SELECTED_STUDENT(state, value) {
-            if (state.selectedStudent && state.selectedStudent.id == value.id)
+            if (state.selectedStudent && state.selectedStudent == value) {
                 state.selectedStudent = null
-            else state.selectedStudent = value
+            } else {
+                state.selectedStudent = value
+            }
         },
         SET_USER(state, value) {
             state.user = value
@@ -101,6 +105,20 @@ export default new Vuex.Store({
                     })
                     context.commit('SET_STUDENTS', applicants)
                 })
+            })
+        },
+        addSuggestion(context, suggestion) {
+            state.students.forEach((student) => {
+                if (student['@id'] !== state.selectedStudent) return
+                student.suggestions.push(suggestion)
+            })
+        },
+        deleteSuggestion(context, id) {
+            state.students.forEach((student) => {
+                if (student['@id'] !== state.selectedStudent) return
+
+                const index = student.suggestions.findIndex((sugg) => sugg['@id'] === id)
+                if (index > -1) student.suggestions.splice(index, 1)
             })
         },
     },
