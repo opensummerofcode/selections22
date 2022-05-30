@@ -80,7 +80,6 @@ export default {
                 if (member.roles.length > 1) {
                     member.role = member.roles.filter((role) => role != 'ROLE_USER')[0]
                 }
-                console.log({ role: member.role })
             })
         })
     },
@@ -94,9 +93,7 @@ export default {
                 role,
             }
 
-            this.$axios.post('/api/users/change-role', body).then((res) => {
-                console.log(res)
-            })
+            this.$axios.post('/api/users/change-role', body).then((res) => {})
         },
     },
 }

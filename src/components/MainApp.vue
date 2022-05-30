@@ -13,11 +13,20 @@ import StudentViewer from './StudentViewer.vue'
 export default {
     name: 'MainApp',
     components: { StudentsList, StudentViewer, ProjectsList },
+    data() {
+        return {
+            fetchInterval: null,
+        }
+    },
     computed: {
         ...mapGetters(['selectedStudent', 'showProjects']),
     },
     mounted() {
         this.fetchStudents()
+        this.fetchInterval = setInterval(this.fetchStudents, 30000)
+    },
+    destroyed() {
+        clearInterval(this.fetchInterval)
     },
     methods: {
         ...mapActions(['fetchStudents']),
