@@ -13,7 +13,10 @@
                         />
                     </template>
                     <template v-if="column.isCustomRoles" #default="props">
-                        <b-select @input="onRoleChange($event, props.row)">
+                        <b-select
+                            @input="onRoleChange($event, props.row)"
+                            :value="props.row[column.field]"
+                        >
                             <option value="ROLE_USER">No access</option>
                             <option value="ROLE_COACH">Coach</option>
                             <option value="ROLE_ADMIN">Coordinator</option>
@@ -59,6 +62,12 @@ export default {
                     field: 'roles',
                     label: 'Roles',
                     isCustomRoles: true,
+                    visible: false,
+                },
+                {
+                    field: 'role',
+                    label: 'Role',
+                    isCustomRoles: true,
                 },
             ]
         },
@@ -66,6 +75,13 @@ export default {
     mounted() {
         this.$axios.get('api/users').then((res) => {
             this.members = res.data['hydra:member']
+            this.members.forEach((member) => {
+                member.role = 'ROLE_USER'
+                if (member.roles.length > 1) {
+                    member.role = member.roles.filter((role) => role != 'ROLE_USER')[0]
+                }
+                console.log({ role: member.role })
+            })
         })
     },
     methods: {
