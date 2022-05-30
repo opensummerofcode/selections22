@@ -10,10 +10,13 @@
   "dependencies": {
     "@mdi/font": "^6.7.96",
     "@vue/eslint-config-prettier": "^7.0.0",
+    "axios": "^0.27.2",
     "buefy": "^0.9.21",
     "core-js": "^3.6.5",
     "node-sass": "^5.0.0",
     "vue": "^2.6.11",
+    "vue-router": "^3.4.9",
+    "vuedraggable": "^2.24.3",
     "vuex": "^3.6.2"
   },
   "devDependencies": {

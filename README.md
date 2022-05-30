@@ -1,6 +1,6 @@
 # osoc-selections-tool
 
-## Easy version
+## Easy way to run in local
 Use the Vue GUI with:
 
 ```

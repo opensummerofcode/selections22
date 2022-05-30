@@ -1,12 +1,17 @@
 <template>
     <div
         :class="
-            `card student-card mb-2 p-4 is-yes ${status} ${isSelected &&
-                'has-background-link-light'}`
+            `card student-card ${isProjectPhaseEnabled && 'draggable'} mb-2 p-4 is-${
+                student.suggestion_status
+            } ${isSelected && !inProject && 'has-background-link-light'}`
         "
+        :draggable="isProjectPhaseEnabled && !inProject"
+        @dragstart="startDrag($event)"
         @click="clickFn"
     >
-        <div class="is-flex is-justify-content-space-between mb-2">
+        <div
+            class="is-flex is-justify-content-space-between mb-2 is-align-items-flex-start"
+        >
             <h2
                 class="has-text-weight-bold"
                 :class="{
@@ -19,10 +24,10 @@
                     Data Scientist
                 </b-tag>
             </h2>
-            <b-button v-if="inProject">
+            <b-button v-if="inProject" @click="$emit('removeStudent')">
                 <b-icon icon="close" />
             </b-button>
-            <b-taglist v-else>
+            <b-taglist v-else class="is-flex-shrink-0">
                 <b-tag type="is-info">{{ yesCount }}</b-tag>
                 <b-tag type="is-warning">{{ maybeCount }}</b-tag>
                 <b-tag type="is-dark">{{ noCount }}</b-tag>
@@ -84,7 +89,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(['selectedStudent']),
+        ...mapGetters(['selectedStudent', 'isProjectPhaseEnabled']),
         yesCount() {
             const yesses = this.student.suggestions.filter(
                 (sugg) => sugg.status.toUpperCase() == 'YES'
@@ -103,23 +108,13 @@ export default {
             )
             return nos.length
         },
-        status() {
-            if (this.yesCount > this.maybeCount && this.yesCount > this.noCount)
-                return 'is-yes'
-            if (this.maybeCount > this.yesCount && this.maybeCount > this.noCount)
-                return 'is-maybe'
-            if (this.noCount > this.yesCount && this.noCount > this.maybeCount)
-                return 'is-no'
-            if (
-                this.maybeCount == this.yesCount ||
-                this.maybeCount == this.noCount ||
-                this.yesCount == this.noCount
-            )
-                return 'is-maybe'
-            return ''
-        },
         isSelected() {
             return this.selectedStudent?.id === this.student.id
+        },
+    },
+    methods: {
+        startDrag(event) {
+            event.dataTransfer.setData('student', this.student.id)
         },
     },
 }
@@ -127,8 +122,13 @@ export default {
 <style lang="scss" scoped>
 .student-card {
     border-bottom: 5px solid whitesmoke;
-    cursor: move;
-    cursor: grab;
+
+    cursor: pointer;
+
+    &.draggable {
+        cursor: move;
+        cursor: grab;
+    }
 
     &:hover {
         background: whitesmoke;

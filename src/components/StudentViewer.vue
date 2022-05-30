@@ -51,29 +51,89 @@
                         <h4 class="is-size-6 has-text-weight-bold mb-2">
                             Suggest
                         </h4>
-                        <div class="mb-5">
-                            <b-button class="mr-1" type="is-info">Yes</b-button>
-                            <b-button class="mr-1" type="is-warning">Maybe</b-button>
-                            <b-button type="is-dark">No</b-button>
+                        <div class="mb-4">
+                            <b-dropdown
+                                :close-on-click="false"
+                                @active-change="onSuggestionModalToggle"
+                            >
+                                <template #trigger>
+                                    <b-button class="mr-1" type="is-info">
+                                        Yes
+                                    </b-button>
+                                </template>
+                                <b-dropdown-item :focusable="false" custom>
+                                    <suggestion-modal
+                                        suggestion="yes"
+                                        :suggestion-reason="suggestionReason"
+                                        @updateReason="updateSuggestionReason"
+                                        @suggest="onSuggestionSubmit"
+                                    />
+                                </b-dropdown-item>
+                            </b-dropdown>
+                            <b-dropdown
+                                :close-on-click="false"
+                                @active-change="onSuggestionModalToggle"
+                            >
+                                <template #trigger>
+                                    <b-button class="mr-1" type="is-warning">
+                                        Maybe
+                                    </b-button>
+                                </template>
+                                <b-dropdown-item :focusable="false" custom>
+                                    <suggestion-modal
+                                        suggestion="maybe"
+                                        :suggestion-reason="suggestionReason"
+                                        @updateReason="updateSuggestionReason"
+                                        @suggest="onSuggestionSubmit"
+                                    />
+                                </b-dropdown-item>
+                            </b-dropdown>
+                            <b-dropdown
+                                :close-on-click="false"
+                                @active-change="onSuggestionModalToggle"
+                            >
+                                <template #trigger>
+                                    <b-button type="is-dark">
+                                        No
+                                    </b-button>
+                                </template>
+                                <b-dropdown-item :focusable="false" custom>
+                                    <suggestion-modal
+                                        suggestion="no"
+                                        :suggestion-reason="suggestionReason"
+                                        @updateReason="updateSuggestionReason"
+                                        @suggest="onSuggestionSubmit"
+                                    />
+                                </b-dropdown-item>
+                            </b-dropdown>
                         </div>
                         <div
                             v-for="(suggestion, i) in student.suggestions"
                             :key="`${student.id}_suggestion_${i}`"
-                            class="columns is-1 is-multiline mb-1"
+                            class="is-flex is-justify-content-flex-start is-align-items-center mb-4"
                         >
-                            <div class="column is-1">
+                            <div class="is-flex-grow-0 mr-2">
                                 <b-tag :type="suggestionType(suggestion)">
                                     {{ suggestionLetter(suggestion) }}
                                 </b-tag>
                             </div>
-                            <div class="column is-11">
-                                <p>{{ suggestion.coach }}: {{ suggestion.comment }}</p>
+                            <div class="is-flex-grow-1">
+                                <p>
+                                    {{ suggestion.coach.firstname }}:
+                                    {{ suggestion.comment }}
+                                </p>
                             </div>
+                            <b-button
+                                class="is-flex-grow-0"
+                                @click="removeSuggestion(suggestion['@id'])"
+                            >
+                                <b-icon icon="close" />
+                            </b-button>
                         </div>
-                        <h4 class="is-size-6 has-text-weight-bold mb-2">
+                        <h4 class="is-size-6 has-text-weight-bold mb-2 mt-5">
                             Coordinator decision
                         </h4>
-                        <b-select :value="student.status">
+                        <b-select :value="student.status" @input="updateStudentStatus">
                             <option value="SCREENING">
                                 Screening
                             </option>
@@ -105,7 +165,13 @@
                                 <h4 class="mb-2 has-text-weight-bold">
                                     Join live on-site
                                 </h4>
-                                <p>{{ student.canWorkOnsite ? 'Yes' : 'No' }}</p>
+                                <p>
+                                    {{
+                                        student.applicantDetails.canWorkOnsite
+                                            ? 'Yes'
+                                            : 'No'
+                                    }}
+                                </p>
                             </div>
                             <div class="column is-half">
                                 <h4 class="mb-2 has-text-weight-bold">
@@ -225,17 +291,53 @@
                                 </div>
                             </div>
                             <div class="column is-half">
-                                <div>
-                                    <b-button type="is-primary" icon-left="download">
+                                <div v-if="hasCVUpload">
+                                    <b-button
+                                        type="is-primary"
+                                        icon-left="download"
+                                        @click="
+                                            download(student.applicantDetails.cvUpload)
+                                        "
+                                    >
                                         Download CV
                                     </b-button>
-                                    <p>{{ student.applicantDetails.cvUpload }}</p>
+                                    <p>{{ cvFileName }}</p>
                                 </div>
-                                <div class="mt-5">
-                                    <b-button type="is-primary" icon-left="download">
+                                <div v-if="hasCVLink">
+                                    <b-button
+                                        type="is-primary"
+                                        icon-left="exit-to-app"
+                                        @click="openUrl(student.applicantDetails.cvLink)"
+                                    >
+                                        Go to CV
+                                    </b-button>
+                                </div>
+                                <div v-if="hasPortfolioUpload" class="mt-5">
+                                    <b-button
+                                        type="is-primary"
+                                        icon-left="download"
+                                        @click="
+                                            download(
+                                                student.applicantDetails.portfolioUpload
+                                            )
+                                        "
+                                    >
                                         Download portfolio
                                     </b-button>
-                                    <p>{{ student.applicantDetails.portfolioUpload }}</p>
+                                    <p>{{ portfolioFileName }}</p>
+                                </div>
+                                <div v-if="hasPortfolioLink" class="mt-5">
+                                    <b-button
+                                        type="is-primary"
+                                        icon-left="exit-to-app"
+                                        @click="
+                                            openUrl(
+                                                student.applicantDetails.portfolioLink
+                                            )
+                                        "
+                                    >
+                                        Go to portfolio
+                                    </b-button>
                                 </div>
                             </div>
                         </div>
@@ -250,12 +352,33 @@
                                 </h3>
                             </div>
                             <div class="column is-half mb-1 has-text-right">
-                                <div>
-                                    <b-button type="is-primary" icon-left="download">
+                                <span v-if="hasMotivationUpload">
+                                    <b-button
+                                        type="is-primary"
+                                        icon-left="download"
+                                        @click="
+                                            download(
+                                                student.applicantDetails.motivationUpload
+                                            )
+                                        "
+                                    >
                                         Download motivation
                                     </b-button>
-                                    <p>{{ student.applicantDetails.motivationUpload }}</p>
-                                </div>
+                                    <p>{{ motivationFileName }}</p>
+                                </span>
+                                <span v-if="hasMotivationLink">
+                                    <b-button
+                                        type="is-primary"
+                                        icon-left="exit-to-app"
+                                        @click="
+                                            openUrl(
+                                                student.applicantDetails.motivationLink
+                                            )
+                                        "
+                                    >
+                                        Go to motivation
+                                    </b-button>
+                                </span>
                             </div>
                         </div>
                         <h4 class="my-2 has-text-weight-bold">
@@ -278,28 +401,69 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import SuggestionModal from './SuggestionModal.vue'
+import tools from '../utils/tools'
+
 export default {
     name: 'StudentViewer',
+    components: { SuggestionModal },
+    data() {
+        return {
+            coachSuggestion: null,
+            suggestionReason: null,
+        }
+    },
     computed: {
-        ...mapGetters(['showProjects', 'selectedStudent']),
+        ...mapGetters(['showProjects', 'selectedStudent', 'getUser']),
         student() {
             return this.selectedStudent
         },
         hasProject() {
             return (
-                this.student?.project.hasOwnProperty('title') &&
+                this.student.project &&
+                this.student.project.hasOwnProperty('title') &&
                 !!this.student.project.title
             )
         },
+        hasCVUpload() {
+            return !tools.isEmptyStr(this.student.applicantDetails.cvUpload)
+        },
+        cvFileName() {
+            const file = this.student.applicantDetails.cvUpload.split('/')
+            return file[file.length - 1]
+        },
+        hasCVLink() {
+            return !tools.isEmptyStr(this.student.applicantDetails.cvLink)
+        },
+        hasPortfolioUpload() {
+            return !tools.isEmptyStr(this.student.applicantDetails.portfolioUpload)
+        },
+        portfolioFileName() {
+            const file = this.student.applicantDetails.portfolioUpload.split('/')
+            return file[file.length - 1]
+        },
+        hasPortfolioLink() {
+            return !tools.isEmptyStr(this.student.applicantDetails.portfolioLink)
+        },
+        hasMotivationUpload() {
+            return !tools.isEmptyStr(this.student.applicantDetails.motivationUpload)
+        },
+        motivationFileName() {
+            const file = this.student.applicantDetails.motivationUpload.split('/')
+            return file[file.length - 1]
+        },
+        hasMotivationLink() {
+            return !tools.isEmptyStr(this.student.applicantDetails.motivationLink)
+        },
         employmentAgreement() {
             switch (this.student.applicantDetails.canWorkUnderEmploymentAgreement) {
-                case 'STUDENT':
+                case '1':
                     return 'Yes, I can work with a student employment agreement in Belgium'
-                case 'VOLUNTEER':
+                case '2':
                     return 'Yes, I can work as a volunteer in Belgium'
-                case 'FREE':
+                case '3':
                     return 'No–but I would like to join this experience for free'
-                case 'NO':
+                case '4':
                     return "No, I won't be able to work as a student, as a volunteer or for free"
                 default:
                     return ''
@@ -342,6 +506,47 @@ export default {
             if (suggestion.status.toUpperCase() === 'MAYBE') return 'M'
             if (suggestion.status.toUpperCase() === 'NO') return 'N'
         },
+        updateSuggestionReason(val) {
+            this.suggestionReason = val
+        },
+        onSuggestionModalToggle(active) {
+            if (!active) {
+                this.suggestionReason = null
+            }
+        },
+        onSuggestionSubmit(suggestion) {
+            const body = {
+                status: suggestion,
+                comment: this.suggestionReason,
+                applicant: `api/applicants/${this.student.id}`,
+                coach: `api/users/${this.getUser.id}`,
+            }
+            this.$axios.post('/api/suggestions', body).then((res) => {
+                console.log({ res })
+            })
+        },
+        updateStudentStatus(status) {
+            const body = { status }
+            this.$axios.put(`/api/applicants/${this.student.id}`, body)
+        },
+        removeSuggestion(id) {
+            this.$axios.delete(id)
+        },
+        openUrl(url) {
+            window.open(url, '_blank').focus()
+        },
+        download(url) {
+            var element = document.createElement('a')
+            element.setAttribute('href', url)
+            element.setAttribute('target', '_blank')
+
+            element.style.display = 'none'
+            document.body.appendChild(element)
+
+            element.click()
+
+            document.body.removeChild(element)
+        },
     },
 }
 </script>
@@ -354,7 +559,7 @@ export default {
 
     .student-header {
         box-shadow: 0 2px 0 0 whitesmoke;
-        z-index: 99;
+        z-index: 8;
     }
 
     .student-name {

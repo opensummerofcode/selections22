@@ -6,22 +6,27 @@
 $info: #3e8ed0;
 
 // Set your colors
-// $primary: #f14a3b;
-// $primary-light: findLightColor($primary);
-// $primary-dark: findDarkColor($primary);
-// $primary-invert: findColorInvert($primary);
+$primary: #00d1b2;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+
+$tabs-toggle-link-active-background-color: $blue;
+$tabs-toggle-link-active-background-color: $blue;
+$tabs-toggle-link-focus-active-background-color: $blue;
+$tabs-toggle-link-focus-active-border-color: $blue;
 
 $colors: (
     "info": (
         $info,
         $white,
     ),
-    // "primary": (
-    //     $primary,
-    //     $primary-invert,
-    //     $primary-light,
-    //     $primary-dark,
-    // ),
+    "primary": (
+        $primary,
+        $primary-invert,
+        $primary-light,
+        $primary-dark,
+    ),
 );
 
 // Import Bulma and Buefy styles

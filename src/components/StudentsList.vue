@@ -4,7 +4,8 @@
             <h1
                 class="has-text-grey-dark has-text-weight-light is-size-7 students-counter mb-3"
             >
-                40 of 80 students shown
+                {{ filteredStudents.length }} of
+                {{ $store.state.students.length }} students shown
             </h1>
             <b-field>
                 <b-input
@@ -33,31 +34,51 @@
                 <b-checkbox v-model="student_filters.student_coach" class="mb-1">
                     Only student coach volunteers
                 </b-checkbox>
-                <b-checkbox v-model="student_filters.unmatched" class="mb-1">
+                <!-- <b-checkbox v-model="student_filters.unmatched" class="mb-1">
                     Only unmatched students
-                </b-checkbox>
+                </b-checkbox> -->
                 <b-checkbox v-model="student_filters.suggested" class="mb-1">
                     Show students I've suggested for
                 </b-checkbox>
             </div>
             <b-field>
-                <b-checkbox-button type="is-info" size="is-small">
-                    Yes (20)
+                <b-checkbox-button
+                    v-model="student_filters.status"
+                    native-value="yes"
+                    type="is-info"
+                    size="is-small"
+                >
+                    Yes ({{ allYesses }})
                 </b-checkbox-button>
-                <b-checkbox-button type="is-warning" size="is-small">
-                    Maybe (20)
+                <b-checkbox-button
+                    v-model="student_filters.status"
+                    native-value="maybe"
+                    type="is-warning"
+                    size="is-small"
+                >
+                    Maybe ({{ allMaybes }})
                 </b-checkbox-button>
-                <b-checkbox-button type="is-dark" size="is-small">
-                    No (20)
+                <b-checkbox-button
+                    v-model="student_filters.status"
+                    native-value="no"
+                    type="is-dark"
+                    size="is-small"
+                >
+                    No ({{ allNos }})
                 </b-checkbox-button>
-                <b-checkbox-button type="is-primary" size="is-small">
-                    Undecided (20)
+                <b-checkbox-button
+                    v-model="student_filters.status"
+                    native-value="undecided"
+                    type="is-primary"
+                    size="is-small"
+                >
+                    Undecided ({{ allUndecided }})
                 </b-checkbox-button>
             </b-field>
         </div>
         <div class="cards-container p-4">
             <student-card
-                v-for="student in students"
+                v-for="student in filteredStudents"
                 :key="student.id"
                 :student="student"
                 :click-fn="() => showStudent(student)"
@@ -67,8 +88,8 @@
 </template>
 <script>
 import StudentCard from './StudentCard.vue'
-import students from '../assets/dummy_students.json'
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+import tools from '../utils/tools'
 
 const roles = [
     'Front-end developer',
@@ -90,7 +111,6 @@ export default {
     data: function() {
         return {
             filteredRoles: roles,
-            students,
             student_filters: {
                 search: '',
                 roles: [],
@@ -98,8 +118,96 @@ export default {
                 student_coach: false,
                 unmatched: false,
                 suggested: false,
+                status: ['yes', 'maybe', 'no', 'undecided'],
             },
         }
+    },
+    computed: {
+        ...mapGetters(['getUser']),
+        filteredStudents() {
+            const filtered = this.$store.state.students.filter((student) => {
+                if (!this.student_filters.status.includes(student.suggestion_status))
+                    return false
+
+                let shouldBeIn = true
+
+                if (!tools.isEmptyStr(this.student_filters.search)) {
+                    shouldBeIn =
+                        student.firstname
+                            .toUpperCase()
+                            .includes(this.student_filters.search.toUpperCase()) ||
+                        student.lastname
+                            .toUpperCase()
+                            .includes(this.student_filters.search.toUpperCase())
+                }
+
+                if (!shouldBeIn) return false
+
+                if (this.student_filters.roles.length) {
+                    shouldBeIn = false
+                    this.student_filters.roles.forEach((role) => {
+                        if (student.applicantDetails.applyingForRoles.includes(role)) {
+                            shouldBeIn = true
+                        }
+                    })
+                }
+
+                if (!shouldBeIn) return false
+
+                if (this.student_filters.alumni) {
+                    shouldBeIn = student.applicantDetails.isAlumni
+                }
+
+                if (!shouldBeIn) return false
+
+                if (this.student_filters.student_coach) {
+                    shouldBeIn = student.applicantDetails.canWorkAsStudentCoach
+                }
+
+                if (!shouldBeIn) return false
+
+                if (this.student_filters.suggested) {
+                    shouldBeIn = false
+                    student.suggestions.forEach((sugg) => {
+                        let coachId = sugg.coach['@id'].split('/')
+                        coachId = coachId[coachId.length - 1]
+                        if (coachId == this.getUser.id) shouldBeIn = true
+                    })
+                }
+
+                return shouldBeIn
+            })
+
+            return filtered
+        },
+        allYesses() {
+            let count = 0
+            this.$store.state.students.forEach((student) => {
+                if (student.suggestion_status === 'yes') count++
+            })
+            return count
+        },
+        allNos() {
+            let count = 0
+            this.$store.state.students.forEach((student) => {
+                if (student.suggestion_status === 'no') count++
+            })
+            return count
+        },
+        allMaybes() {
+            let count = 0
+            this.$store.state.students.forEach((student) => {
+                if (student.suggestion_status === 'maybe') count++
+            })
+            return count
+        },
+        allUndecided() {
+            let count = 0
+            this.$store.state.students.forEach((student) => {
+                if (student.suggestion_status === 'undecided') count++
+            })
+            return count
+        },
     },
     methods: {
         ...mapMutations(['SET_SELECTED_STUDENT']),
@@ -129,14 +237,14 @@ export default {
     box-shadow: 2px 0 0 0 whitesmoke;
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: auto auto;
+    grid-template-rows: max-content auto;
     overflow-y: hidden;
 }
 
 .students-search {
     width: 100%;
     box-shadow: 0 2px 0 0 whitesmoke;
-    z-index: 99;
+    z-index: 8;
 }
 
 .students-counter {

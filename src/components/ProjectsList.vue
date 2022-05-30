@@ -10,8 +10,16 @@
                     type="is-toggle-rounded"
                     size="is-small"
                 >
-                    <b-tab-item value="projects" label="Projects" />
-                    <b-tab-item value="conflicts" label="Conflicts (1)" />
+                    <b-tab-item
+                        class="has-background-primary"
+                        value="projects"
+                        label="Projects"
+                    />
+                    <b-tab-item
+                        class="has-background-primary"
+                        value="conflicts"
+                        label="Conflicts (1)"
+                    />
                 </b-tabs>
             </div>
         </div>
@@ -33,10 +41,15 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'ProjectsList',
-    components: { ProjectCard },
+    components: {
+        ProjectCard,
+    },
     data() {
         return {
             conflictsToggle: 'projects',
+            project1: {
+                students: [],
+            },
         }
     },
     computed: {

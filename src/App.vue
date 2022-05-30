@@ -8,51 +8,80 @@
                     class="navbar-logo ml-5"
                 />
                 <div class="page-title mx-4">
-                    <p class="has-text-primary has-text-weight-medium">
+                    <p class="has-text-weight-normal">
                         #osoc selections
                     </p>
                 </div>
             </template>
-            <template #start>
-                <b-navbar-item href="#" class="is-tab" active>
+            <template v-if="getUser" #start>
+                <b-navbar-item
+                    :to="{ name: 'home' }"
+                    class="is-tab"
+                    tag="router-link"
+                    :active="$route.name == 'home'"
+                >
                     Suggest students
                 </b-navbar-item>
-                <b-navbar-item href="#" class="is-tab">Student pipeline</b-navbar-item>
+                <b-navbar-item v-if="isPipelineEnabled" href="#" class="is-tab">
+                    Student pipeline
+                </b-navbar-item>
             </template>
-            <template #end>
+            <template v-if="getUser" #end>
                 <b-switch
+                    v-if="isProjectPhaseEnabled"
                     :value="showProjects"
                     type="is-primary"
                     @input="SET_SHOW_PROJECTS"
                 >
                     Show projects
                 </b-switch>
-                <b-navbar-item class="is-tab" href="#">Manage users</b-navbar-item>
-                <b-button class="mr-3 ml-2">Log out</b-button>
+                <b-navbar-item
+                    v-if="getUser.roles.includes('ROLE_ADMIN')"
+                    class="is-tab"
+                    tag="router-link"
+                    :to="{ name: 'users' }"
+                    :active="$route.name == 'users'"
+                >
+                    Manage users
+                </b-navbar-item>
+                <b-button class="mr-3 ml-2" @click="logOut">Log out</b-button>
             </template>
         </b-navbar>
-        <div class="main" :class="{ 'two-sections': showProjects && selectedStudent }">
-            <students-list />
-            <student-viewer v-if="selectedStudent" />
-            <projects-list v-if="showProjects" />
-        </div>
+        <router-view />
     </div>
 </template>
 
 <script>
-import ProjectsList from './components/ProjectsList.vue'
-import StudentsList from './components/StudentsList.vue'
-import StudentViewer from './components/StudentViewer.vue'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import cookies from './utils/cookies'
 
 export default {
     name: 'App',
-    components: { StudentsList, StudentViewer, ProjectsList },
     computed: {
-        ...mapGetters(['showProjects', 'selectedStudent']),
+        ...mapGetters([
+            'showProjects',
+            'selectedStudent',
+            'getUser',
+            'isProjectPhaseEnabled',
+        ]),
+        isPipelineEnabled() {
+            return process.env.VUE_APP_PIPELINE_ENABLED.toUpperCase() === 'TRUE'
+        },
+    },
+    mounted() {
+        if (cookies.get('jwt')) {
+            this.$axios.get('api/me').then((user_res) => {
+                this.SET_USER(user_res.data)
+
+                if (this.$route.name != 'home') {
+                    this.$router.push({ name: 'home' })
+                }
+            })
+        }
     },
     methods: {
-        ...mapMutations(['SET_SHOW_PROJECTS']),
+        ...mapMutations(['SET_SHOW_PROJECTS', 'SET_USER']),
+        ...mapActions(['logOut']),
     },
 }
 </script>
@@ -77,21 +106,10 @@ export default {
 }
 
 .navbar-logo {
-    width: 50px;
+    width: 38px;
 }
 
 .navbar-end {
     align-items: center;
-}
-
-.main {
-    display: grid;
-    grid-template-columns: 420px 1fr;
-    grid-template-rows: 1fr;
-    height: calc(100vh - 72px);
-
-    &.two-sections {
-        grid-template-columns: 420px 1fr 1fr;
-    }
 }
 </style>
