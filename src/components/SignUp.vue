@@ -23,7 +23,11 @@
                                 </p>
                             </div>
                         </div>
-                        <form class="signup-form pb-5 mb-5" @submit="signUp">
+                        <form
+                            v-if="!confirmed && !error"
+                            class="signup-form pb-5 mb-5"
+                            @submit="signUp"
+                        >
                             <div class="columns mb-0">
                                 <b-field label="First Name" class="column is-half">
                                     <b-input v-model="firstname" type="text" />
@@ -44,12 +48,32 @@
                             <b-button
                                 type="is-primary"
                                 class="is-block is-fullwidth"
-                                :disabled="submitDisabled"
+                                :disabled="submitted || submitDisabled"
                                 native-type="submit"
                             >
                                 Sign up
                             </b-button>
                         </form>
+                        <div v-if="confirmed" class="pb-5 signup-form mb-5">
+                            <div>
+                                <p>
+                                    You're signed up! We'll let you know when you're ready
+                                    to
+                                    <router-link :to="{ name: 'signin' }">
+                                        sign in
+                                    </router-link>
+                                    !
+                                </p>
+                            </div>
+                        </div>
+                        <div v-if="error" class="pb-5 signup-form mb-5">
+                            <div>
+                                <p>
+                                    Uh oh! Something went wrong. Please contact us so we
+                                    can fix the issue!
+                                </p>
+                            </div>
+                        </div>
                         <p class="is-italic mb-5">
                             Let us know you've signed up via mail or on Discord and we'll
                             give you the correct rights.
@@ -75,11 +99,14 @@ export default {
             lastname: null,
             email: null,
             password: null,
+            submitted: false,
+            confirmed: false,
+            error: false,
         }
     },
     computed: {
         submitDisabled() {
-            return !this.email || !this.password
+            return !this.email || !this.password || !this.firstname || !this.lastname
         },
     },
     methods: {
@@ -92,7 +119,14 @@ export default {
                 email: this.email,
                 password: this.password,
             }
-            this.$axios.post('register', body).then((res) => console.log({ res }))
+            this.$axios
+                .post('register', body)
+                .then((res) => {
+                    this.confirmed = true
+                })
+                .catch((err) => {
+                    this.error = true
+                })
         },
     },
 }
