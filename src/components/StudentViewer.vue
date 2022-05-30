@@ -55,6 +55,7 @@
                             <b-dropdown
                                 :close-on-click="false"
                                 @active-change="onSuggestionModalToggle"
+                                ref="dropdown_yes"
                             >
                                 <template #trigger>
                                     <b-button class="mr-1" type="is-info">
@@ -73,6 +74,7 @@
                             <b-dropdown
                                 :close-on-click="false"
                                 @active-change="onSuggestionModalToggle"
+                                ref="dropdown_maybe"
                             >
                                 <template #trigger>
                                     <b-button class="mr-1" type="is-warning">
@@ -91,6 +93,7 @@
                             <b-dropdown
                                 :close-on-click="false"
                                 @active-change="onSuggestionModalToggle"
+                                ref="dropdown_no"
                             >
                                 <template #trigger>
                                     <b-button type="is-dark">
@@ -541,10 +544,11 @@ export default {
                 coach: `api/users/${this.getUser.id}`,
             }
             this.$axios.post('/api/suggestions', body).then((res) => {
-                const suggestion = res.data
-                suggestion.coach = this.getUser
-                suggestion.coach['@id'] = `/api/users/${this.getUser.id}`
-                this.addSuggestion(suggestion)
+                const suggestionRes = res.data
+                suggestionRes.coach = this.getUser
+                suggestionRes.coach['@id'] = `/api/users/${this.getUser.id}`
+                this.addSuggestion(suggestionRes)
+                this.$refs[`dropdown_${suggestion}`].toggle()
             })
         },
         updateStudentStatus(status) {
