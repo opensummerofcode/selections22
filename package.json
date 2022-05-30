@@ -1,9 +1,6 @@
 {
   "name": "osoc-selections-tool",
   "version": "0.1.0",
-  "engines": {
-    "npm": "8.5.5"
-  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,7 +15,7 @@
     "core-js": "^3.6.5",
     "node-sass": "^5.0.0",
     "vue": "^2.6.11",
-    "vue-router": "^3.5.4",
+    "vue-router": "^3.4.9",
     "vuedraggable": "^2.24.3",
     "vuex": "^3.6.2"
   },
