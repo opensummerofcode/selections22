@@ -99,9 +99,9 @@ export default new Vuex.Store({
                         else if (maybe > yes && maybe > no)
                             applicant.suggestion_status = 'maybe'
                         else if (no > yes && no > maybe)
-                            applicant.suggestion_status = 'is-no'
+                            applicant.suggestion_status = 'no'
                         else if (maybe == yes || maybe == no || yes == no)
-                            applicant.suggestion_status = 'is-maybe'
+                            applicant.suggestion_status = 'maybe'
                     })
                     context.commit('SET_STUDENTS', applicants)
                 })

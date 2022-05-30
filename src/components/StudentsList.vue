@@ -126,8 +126,9 @@ export default {
         ...mapGetters(['getUser']),
         filteredStudents() {
             const filtered = this.$store.state.students.filter((student) => {
-                if (!this.student_filters.status.includes(student.suggestion_status))
+                if (!this.student_filters.status.includes(student.suggestion_status)) {
                     return false
+                }
 
                 let shouldBeIn = true
 
