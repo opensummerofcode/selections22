@@ -94,7 +94,7 @@ import tools from '../utils/tools'
 const roles = [
     'Front-end developer',
     'Back-end developer',
-    'UI / UX designer',
+    'UX / UI designer',
     'Graphic designer',
     'Business',
     'Storyteller',
