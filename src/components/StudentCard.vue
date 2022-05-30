@@ -19,7 +19,7 @@
                     'is-size-5': !inProject,
                 }"
             >
-                {{ student.firstname }} {{ student.lastname }}
+                {{ callname }} {{ student.lastname }}
                 <b-tag v-if="inProject" class="has-text-weight-normal">
                     Data Scientist
                 </b-tag>
@@ -71,6 +71,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import tools from '../utils/tools'
 
 export default {
     name: 'StudentCard',
@@ -110,6 +111,11 @@ export default {
         },
         isSelected() {
             return this.selectedStudent?.id === this.student.id
+        },
+        callname() {
+            return tools.isEmptyStr(this.student.callname)
+                ? this.student.firstname
+                : this.student.callname
         },
     },
     methods: {

@@ -3,11 +3,11 @@
         <div class="student-header p-4 m-0" :class="{ columns: !showProjects }">
             <div class="column">
                 <h1 class="is-size-3 has-text-weight-semibold student-name">
-                    {{ student.firstname }} {{ student.lastname }}
+                    {{ callname }} {{ student.lastname }}
                 </h1>
                 <h3 class="is-size-5 mb-5">
-                    {{ student.callname ? 'AKA ' + student.callname : '' }}
-                    {{ student.callname && student.pronouns ? ' – ' : '' }}
+                    {{ paperworkName || '' }}
+                    {{ paperworkName && student.pronouns ? ' – ' : '' }}
                     {{ student.pronouns }}
                 </h3>
                 <div>
@@ -133,7 +133,11 @@
                         <h4 class="is-size-6 has-text-weight-bold mb-2 mt-5">
                             Coordinator decision
                         </h4>
-                        <b-select :value="student.status" @input="updateStudentStatus">
+                        <b-select
+                            :value="student.status"
+                            :disabled="$store.state.user.roles.includes('ROLE_MEMBER')"
+                            @input="updateStudentStatus"
+                        >
                             <option value="SCREENING">
                                 Screening
                             </option>
@@ -493,6 +497,16 @@ export default {
                 if (i < fields.length - 1) returnStr += ', '
             })
             return returnStr
+        },
+        callname() {
+            return tools.isEmptyStr(this.student.callname)
+                ? this.student.firstname
+                : this.student.callname
+        },
+        paperworkName() {
+            return !tools.isEmptyStr(this.student.callname)
+                ? this.student.firstname + ' (on paper)'
+                : null
         },
     },
     methods: {

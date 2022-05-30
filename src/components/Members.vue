@@ -13,12 +13,11 @@
                         />
                     </template>
                     <template v-if="column.isCustomRoles" #default="props">
-                        <b-switch
-                            :value="props.row.roles.includes('ROLE_ADMIN')"
-                            @input="toggleAdminRights($event, props.row)"
-                        >
-                            Admin rights
-                        </b-switch>
+                        <b-select @input="onRoleChange($event, props.row)">
+                            <option value="ROLE_USER">No access</option>
+                            <option value="ROLE_COACH">Coach</option>
+                            <option value="ROLE_ADMIN">Coordinator</option>
+                        </b-select>
                     </template>
                     <template v-else #default="props">
                         {{ props.row[column.field] }}
@@ -70,22 +69,16 @@ export default {
         })
     },
     methods: {
-        toggleAdminRights(val, row) {
-            const roles = row.roles
-
-            if (roles.includes('ROLE_ADMIN') && !val) {
-                const index = array.indexOf(item)
-                if (index !== -1) {
-                    roles.splice(index, 1)
-                }
-            } else if (!roles.includes('ROLE_ADMIN') && val) {
-                roles.push('ROLE_ADMIN')
-            }
-
+        onRoleChange(role, row) {
             let userId = row['@id'].split('/')
             userId = userId[userId.length - 1]
 
-            this.$axios.put(`/api/users/change-role/${userId}`, roles).then((res) => {
+            const body = {
+                uuid: userId,
+                role,
+            }
+
+            this.$axios.post('/api/users/change-role', body).then((res) => {
                 console.log(res)
             })
         },

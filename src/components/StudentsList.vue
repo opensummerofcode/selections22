@@ -136,6 +136,9 @@ export default {
                         student.firstname
                             .toUpperCase()
                             .includes(this.student_filters.search.toUpperCase()) ||
+                        student.callname
+                            .toUpperCase()
+                            .includes(this.student_filters.search.toUpperCase()) ||
                         student.lastname
                             .toUpperCase()
                             .includes(this.student_filters.search.toUpperCase())
