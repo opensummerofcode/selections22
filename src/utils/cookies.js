@@ -1,7 +1,7 @@
 const cookies = {}
 
 cookies.set = (name, value, exp = null) => {
-    const cookie = `${name}=${value}${exp ? ';expires=' : ''}`
+    const cookie = `${name}=${value}${exp ? `;expires=${exp}` : ''}`
     document.cookie = cookie
 }
 

@@ -15,7 +15,22 @@ instance.interceptors.request.use(
         const isApiCall = config.url.startsWith('api/') || config.url.startsWith('/api/')
 
         if (isApiCall) {
-            config.headers['Authorization'] = `Bearer ${cookies.get('jwt')}`
+            if (!cookies.get('jwt')) {
+                const refresh_token = cookies.get('refresh_token')
+                return instance.post('/refresh_token', { refresh_token }).then((res) => {
+                    const exp = new Date()
+                    exp.setHours(exp.getHours() + 1)
+
+                    cookies.set('jwt', res.data.token, exp)
+                    cookies.set('refresh_token', res.data.refresh_token)
+
+                    config.headers['Authorization'] = `Bearer ${res.data.token}`
+
+                    return config
+                })
+            } else {
+                config.headers['Authorization'] = `Bearer ${cookies.get('jwt')}`
+            }
         }
         // Do something before request is sent
 
@@ -35,25 +50,6 @@ instance.interceptors.response.use(
         return response
     },
     function(error) {
-        if (error.response.data.message === 'Expired JWT Token') {
-            const refresh_token = cookies.get('refresh_token')
-            instance.post('/refresh_token', { refresh_token }).then((res) => {
-                const exp = new Date()
-                exp.setHours(exp.getHours() + 1)
-
-                cookies.set('jwt', res.data.token, exp)
-                cookies.set('refresh_token', res.data.refresh_token)
-
-                return new Promise((resolve) => {
-                    resolve(axios(config))
-                })
-
-                // instance.get('api/me').then((user_res) => {
-                //     this.SET_USER(user_res.data)
-                //     this.$router.push({ name: 'home' })
-                // })
-            })
-        }
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         /*if (error.response.status !== 404) {
             // can update message key in store and use it in toast

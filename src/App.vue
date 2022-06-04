@@ -60,7 +60,6 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import cookies from './utils/cookies'
 
 export default {
     name: 'App',
@@ -74,17 +73,6 @@ export default {
         isPipelineEnabled() {
             return process.env.VUE_APP_PIPELINE_ENABLED.toUpperCase() === 'TRUE'
         },
-    },
-    mounted() {
-        // if (cookies.get('jwt')) {
-        //     this.$axios.get('api/me').then((user_res) => {
-        //         this.SET_USER(user_res.data)
-        //         console.log(this.$router)
-        //         // if (this.$route.name.startsWith('sign')) {
-        //         //     this.$router.push({ name: 'home' })
-        //         // }
-        //     })
-        // }
     },
     methods: {
         ...mapMutations(['SET_SHOW_PROJECTS', 'SET_USER']),
