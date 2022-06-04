@@ -15,13 +15,13 @@ instance.interceptors.request.use(
         const isApiCall = config.url.startsWith('api/') || config.url.startsWith('/api/')
 
         if (isApiCall) {
-            if (!cookies.get('jwt')) {
+            if (!cookies.get('json_web_token')) {
                 const refresh_token = cookies.get('refresh_token')
                 return instance.post('/refresh_token', { refresh_token }).then((res) => {
                     const exp = new Date()
                     exp.setHours(exp.getHours() + 1)
 
-                    cookies.set('jwt', res.data.token, exp)
+                    cookies.set('json_web_token', res.data.token, exp)
                     cookies.set('refresh_token', res.data.refresh_token)
 
                     config.headers['Authorization'] = `Bearer ${res.data.token}`
@@ -29,7 +29,9 @@ instance.interceptors.request.use(
                     return config
                 })
             } else {
-                config.headers['Authorization'] = `Bearer ${cookies.get('jwt')}`
+                config.headers['Authorization'] = `Bearer ${cookies.get(
+                    'json_web_token'
+                )}`
             }
         }
         // Do something before request is sent

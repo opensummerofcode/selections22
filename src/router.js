@@ -13,7 +13,7 @@ import cookies from './utils/cookies'
 import axios from 'axios'
 
 const beforeEnter = async (to, from, next) => {
-    const isLoggedIn = cookies.get('jwt')
+    const isLoggedIn = cookies.get('json_web_token')
 
     if (isLoggedIn) {
         store.dispatch('fetchUser').then((res) => {

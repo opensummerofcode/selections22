@@ -65,7 +65,7 @@ export default new Vuex.Store({
             })
         },
         logOut(context) {
-            cookies.delete('jwt')
+            cookies.delete('json_web_token')
             cookies.delete('refresh_token')
             context.commit('SET_USER', null)
             router.push({ name: 'signin' })
