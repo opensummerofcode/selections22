@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <b-navbar shadow>
+        <b-navbar shadow class="navbar">
             <template #brand>
                 <img
                     src="./assets/logo-osoc-color.svg"
@@ -20,9 +20,16 @@
                     tag="router-link"
                     :active="$route.name == 'home'"
                 >
-                    Suggest students
+                    Select students
                 </b-navbar-item>
-                <b-navbar-item v-if="isPipelineEnabled" href="#" class="is-tab">
+                <b-navbar-item
+                    v-if="isPipelineEnabled && getUser.roles.includes('ROLE_ADMIN')"
+                    href="#"
+                    class="is-tab"
+                    tag="router-link"
+                    :to="{ name: 'pipeline' }"
+                    :active="$route.name == 'pipeline'"
+                >
                     Student pipeline
                 </b-navbar-item>
             </template>
@@ -69,15 +76,15 @@ export default {
         },
     },
     mounted() {
-        if (cookies.get('jwt')) {
-            this.$axios.get('api/me').then((user_res) => {
-                this.SET_USER(user_res.data)
-
-                if (this.$route.name != 'home') {
-                    this.$router.push({ name: 'home' })
-                }
-            })
-        }
+        // if (cookies.get('jwt')) {
+        //     this.$axios.get('api/me').then((user_res) => {
+        //         this.SET_USER(user_res.data)
+        //         console.log(this.$router)
+        //         // if (this.$route.name.startsWith('sign')) {
+        //         //     this.$router.push({ name: 'home' })
+        //         // }
+        //     })
+        // }
     },
     methods: {
         ...mapMutations(['SET_SHOW_PROJECTS', 'SET_USER']),
@@ -87,6 +94,11 @@ export default {
 </script>
 
 <style lang="scss">
+.navbar {
+    position: sticky;
+    top: 0;
+}
+
 .page-title {
     height: 100%;
     display: flex;

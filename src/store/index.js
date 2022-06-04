@@ -58,6 +58,12 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        fetchUser(context) {
+            return axios.get('api/me').then((user_res) => {
+                context.commit('SET_USER', user_res.data)
+                return user_res.data
+            })
+        },
         logOut(context) {
             cookies.delete('jwt')
             cookies.delete('refresh_token')

@@ -8,16 +8,32 @@ import SignIn from './components/SignIn.vue'
 import SignUp from './components/SignUp.vue'
 import MainApp from './components/MainApp'
 import Members from './components/Members'
+import Pipeline from './components/Pipeline'
+import cookies from './utils/cookies'
+import axios from 'axios'
 
 const beforeEnter = async (to, from, next) => {
-    if (to.name.startsWith('sign') && store.state.user) {
-        next({ name: 'home' })
-    } else if (!to.name.startsWith('sign') && !store.state.user) {
-        next({ name: 'signin' })
-    } else if (to.name === 'users' && !store.state.user.roles.includes('ROLE_ADMIN')) {
-        next({ name: 'home' })
+    const isLoggedIn = cookies.get('jwt')
+
+    if (isLoggedIn) {
+        store.dispatch('fetchUser').then((res) => {
+            if (to.name.startsWith('sign')) {
+                next({ name: 'home' })
+            } else if (
+                (to.name === 'users' || to.name === 'pipeline') &&
+                !store.state.user.roles.includes('ROLE_ADMIN')
+            ) {
+                next({ name: 'home' })
+            } else {
+                next()
+            }
+        })
     } else {
-        next()
+        if (!to.name.startsWith('sign') && !isLoggedIn) {
+            next({ name: 'signin' })
+        } else {
+            next()
+        }
     }
 }
 
@@ -26,6 +42,12 @@ const routes = [
     { path: '/signup', name: 'signup', component: SignUp, beforeEnter: beforeEnter },
     { path: '/', name: 'home', component: MainApp, beforeEnter: beforeEnter },
     { path: '/users', name: 'users', component: Members, beforeEnter: beforeEnter },
+    {
+        path: '/pipeline',
+        name: 'pipeline',
+        component: Pipeline,
+        beforeEnter: beforeEnter,
+    },
 ]
 
 const router = new Router({

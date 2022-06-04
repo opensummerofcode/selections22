@@ -14,8 +14,8 @@
                     </template>
                     <template v-if="column.isCustomRoles" #default="props">
                         <b-select
-                            @input="onRoleChange($event, props.row)"
                             :value="props.row[column.field]"
+                            @input="onRoleChange($event, props.row)"
                         >
                             <option value="ROLE_USER">No access</option>
                             <option value="ROLE_COACH">Coach</option>
@@ -42,11 +42,6 @@ export default {
         columns() {
             return [
                 {
-                    field: 'email',
-                    label: 'Email',
-                    visible: false,
-                },
-                {
                     field: 'firstname',
                     label: 'First Name',
                     searchable: true,
@@ -57,6 +52,11 @@ export default {
                     label: 'Last Name',
                     searchable: true,
                     sortable: true,
+                },
+                {
+                    field: 'email',
+                    label: 'Email',
+                    visible: true,
                 },
                 {
                     field: 'roles',

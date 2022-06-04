@@ -143,7 +143,7 @@
                         </h4>
                         <b-select
                             :value="student.status"
-                            :disabled="$store.state.user.roles.includes('ROLE_MEMBER')"
+                            :disabled="!$store.state.user.roles.includes('ROLE_ADMIN')"
                             @input="updateStudentStatus"
                         >
                             <option value="SCREENING">
