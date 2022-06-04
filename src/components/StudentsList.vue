@@ -216,7 +216,7 @@ export default {
     methods: {
         ...mapMutations(['SET_SELECTED_STUDENT']),
         getFilteredRoles(text) {
-            this.filteredTags = roles.filter((option) => {
+            this.filteredRoles = roles.filter((option) => {
                 return (
                     option
                         .toString()

@@ -8,7 +8,11 @@
                 <h3 class="is-size-5 mb-5">
                     {{ paperworkName || '' }}
                     {{ paperworkName && student.pronouns ? ' – ' : '' }}
-                    {{ student.pronouns }}
+                    {{
+                        student.pronouns
+                            ? 'prefers to be referred ' + student.pronouns
+                            : ''
+                    }}
                 </h3>
                 <div>
                     <b-tag
@@ -53,9 +57,9 @@
                         </h4>
                         <div class="mb-4">
                             <b-dropdown
+                                ref="dropdown_yes"
                                 :close-on-click="false"
                                 @active-change="onSuggestionModalToggle"
-                                ref="dropdown_yes"
                             >
                                 <template #trigger>
                                     <b-button class="mr-1" type="is-info">
@@ -72,9 +76,9 @@
                                 </b-dropdown-item>
                             </b-dropdown>
                             <b-dropdown
+                                ref="dropdown_maybe"
                                 :close-on-click="false"
                                 @active-change="onSuggestionModalToggle"
-                                ref="dropdown_maybe"
                             >
                                 <template #trigger>
                                     <b-button class="mr-1" type="is-warning">
@@ -91,9 +95,9 @@
                                 </b-dropdown-item>
                             </b-dropdown>
                             <b-dropdown
+                                ref="dropdown_no"
                                 :close-on-click="false"
                                 @active-change="onSuggestionModalToggle"
-                                ref="dropdown_no"
                             >
                                 <template #trigger>
                                     <b-button type="is-dark">
@@ -127,9 +131,9 @@
                                 </p>
                             </div>
                             <b-button
+                                v-if="isMySuggestion(suggestion)"
                                 class="is-flex-grow-0"
                                 @click="removeSuggestion(suggestion['@id'])"
-                                v-if="isMySuggestion(suggestion)"
                             >
                                 <b-icon icon="close" />
                             </b-button>
@@ -312,13 +316,18 @@
                                     <p>{{ cvFileName }}</p>
                                 </div>
                                 <div v-if="hasCVLink">
-                                    <b-button
-                                        type="is-primary"
-                                        icon-left="exit-to-app"
-                                        @click="openUrl(student.applicantDetails.cvLink)"
+                                    <a
+                                        :href="validUrl(student.applicantDetails.cvLink)"
+                                        target="_blank"
+                                        class="button is-primary"
                                     >
+                                        <b-icon
+                                            icon="exit-to-app"
+                                            class="mr-1"
+                                            size="is-small"
+                                        />
                                         Go to CV
-                                    </b-button>
+                                    </a>
                                 </div>
                                 <div v-if="hasPortfolioUpload" class="mt-5">
                                     <b-button
@@ -335,17 +344,22 @@
                                     <p>{{ portfolioFileName }}</p>
                                 </div>
                                 <div v-if="hasPortfolioLink" class="mt-5">
-                                    <b-button
-                                        type="is-primary"
-                                        icon-left="exit-to-app"
-                                        @click="
-                                            openUrl(
+                                    <a
+                                        :href="
+                                            validUrl(
                                                 student.applicantDetails.portfolioLink
                                             )
                                         "
+                                        target="_blank"
+                                        class="button is-primary"
                                     >
+                                        <b-icon
+                                            icon="exit-to-app"
+                                            class="mr-1"
+                                            size="is-small"
+                                        />
                                         Go to portfolio
-                                    </b-button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -375,17 +389,22 @@
                                     <p>{{ motivationFileName }}</p>
                                 </span>
                                 <span v-if="hasMotivationLink">
-                                    <b-button
-                                        type="is-primary"
-                                        icon-left="exit-to-app"
-                                        @click="
-                                            openUrl(
+                                    <a
+                                        :href="
+                                            validUrl(
                                                 student.applicantDetails.motivationLink
                                             )
                                         "
+                                        target="_blank"
+                                        class="button is-primary"
                                     >
+                                        <b-icon
+                                            icon="exit-to-app"
+                                            class="mr-1"
+                                            size="is-small"
+                                        />
                                         Go to motivation
-                                    </b-button>
+                                    </a>
                                 </span>
                             </div>
                         </div>
@@ -560,8 +579,11 @@ export default {
                 this.deleteSuggestion(id)
             })
         },
+        validUrl(url) {
+            return tools.isValidUrl(url) ? url : `//${url}`
+        },
         openUrl(url) {
-            window.open(url, '_blank').focus()
+            window.open(tools.isValidUrl(url) ? url : `//${url}`, '_blank').focus()
         },
         download(url) {
             var element = document.createElement('a')
