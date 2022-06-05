@@ -14,14 +14,17 @@ instance.interceptors.request.use(
     function(config) {
         const isApiCall = config.url.startsWith('api/') || config.url.startsWith('/api/')
 
+        const isJwtExpired = new Date() > new Date(cookies.get('jwt_expiration'))
+
         if (isApiCall) {
-            if (!cookies.get('json_web_token')) {
+            if (!cookies.get('json_web_token') || isJwtExpired) {
                 const refresh_token = cookies.get('refresh_token')
                 return instance.post('/refresh_token', { refresh_token }).then((res) => {
                     const exp = new Date()
                     exp.setHours(exp.getHours() + 1)
 
                     cookies.set('json_web_token', res.data.token, exp)
+                    cookies.set('jwt_expiration', exp)
                     cookies.set('refresh_token', res.data.refresh_token)
 
                     config.headers['Authorization'] = `Bearer ${res.data.token}`

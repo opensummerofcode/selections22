@@ -12,6 +12,7 @@ const getDefaultState = () => {
         showProjects: false,
         selectedStudent: null,
         students: [],
+        projects: [],
         user: null,
     }
 }
@@ -56,6 +57,9 @@ export default new Vuex.Store({
         SET_STUDENTS(state, value) {
             state.students = value
         },
+        SET_PROJECTS(state, value) {
+            state.projects = value
+        },
     },
     actions: {
         fetchUser(context) {
@@ -65,6 +69,8 @@ export default new Vuex.Store({
             })
         },
         logOut(context) {
+            cookies.delete('jwt')
+            cookies.delete('jwt_expiration')
             cookies.delete('json_web_token')
             cookies.delete('refresh_token')
             context.commit('SET_USER', null)
@@ -111,6 +117,11 @@ export default new Vuex.Store({
                     })
                     context.commit('SET_STUDENTS', applicants)
                 })
+            })
+        },
+        fetchProjects(context) {
+            axios.get('/api/projects').then((res) => {
+                context.commit('SET_PROJECTS', res.data['hydra:member'])
             })
         },
         addSuggestion(context, suggestion) {

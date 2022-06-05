@@ -1,7 +1,7 @@
 <template>
     <div class="p-5">
         <h1 class="title">Manage members</h1>
-        <b-table :data="members" hoverable scrollable>
+        <b-table :data="members" hoverable scrollable class="members-table">
             <template v-for="column in columns">
                 <b-table-column v-bind="column" :key="column.email">
                     <template v-if="column.searchable" #searchable="props">
@@ -98,3 +98,10 @@ export default {
     },
 }
 </script>
+<style lang="scss">
+.members-table {
+    td {
+        vertical-align: middle;
+    }
+}
+</style>

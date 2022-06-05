@@ -75,6 +75,7 @@ export default {
                 exp.setHours(exp.getHours() + 1)
 
                 cookies.set('json_web_token', res.data.token, exp)
+                cookies.set('jwt_expiration', exp)
                 cookies.set('refresh_token', res.data.refresh_token)
 
                 this.$axios.get('api/me').then((user_res) => {

@@ -23,13 +23,17 @@ export default {
     },
     mounted() {
         this.fetchStudents()
-        this.fetchInterval = setInterval(this.fetchStudents, 30000)
+        this.fetchProjects()
+        this.fetchInterval = setInterval(() => {
+            this.fetchStudents
+            this.fetchProjects
+        }, 30000)
     },
     destroyed() {
         clearInterval(this.fetchInterval)
     },
     methods: {
-        ...mapActions(['fetchStudents']),
+        ...mapActions(['fetchStudents', 'fetchProjects']),
     },
 }
 </script>
