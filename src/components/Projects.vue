@@ -262,6 +262,7 @@ export default {
         deleteProject() {
             this.$axios.delete(this.projectToDelete['@id']).then((_) => {
                 this.fetchProjects()
+                this.closeDeleteModal()
             })
         },
         openCreationModal() {
