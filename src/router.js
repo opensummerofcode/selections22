@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
+import cookies from './utils/cookies'
 
 Vue.use(Router)
 
@@ -10,8 +11,6 @@ import MainApp from './components/MainApp'
 import Members from './components/Members'
 import Projects from './components/Projects'
 import Pipeline from './components/Pipeline'
-import cookies from './utils/cookies'
-import axios from 'axios'
 
 const beforeEnter = async (to, from, next) => {
     const isLoggedIn = cookies.get('json_web_token')
@@ -41,21 +40,22 @@ const beforeEnter = async (to, from, next) => {
 }
 
 const routes = [
-    { path: '/signin', name: 'signin', component: SignIn, beforeEnter: beforeEnter },
-    { path: '/signup', name: 'signup', component: SignUp, beforeEnter: beforeEnter },
-    { path: '/', name: 'home', component: MainApp, beforeEnter: beforeEnter },
-    { path: '/users', name: 'users', component: Members, beforeEnter: beforeEnter },
+    { path: '/signin', name: 'signin', component: SignIn, beforeEnter },
+    { path: '/signup', name: 'signup', component: SignUp, beforeEnter },
+    { path: '/reset-password', name: 'signin', component: SignIn, beforeEnter },
+    { path: '/', name: 'home', component: MainApp, beforeEnter },
+    { path: '/users', name: 'users', component: Members, beforeEnter },
     {
         path: '/projects',
         name: 'projects',
         component: Projects,
-        beforeEnter: beforeEnter,
+        beforeEnter,
     },
     {
         path: '/pipeline',
         name: 'pipeline',
         component: Pipeline,
-        beforeEnter: beforeEnter,
+        beforeEnter,
     },
 ]
 

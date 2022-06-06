@@ -191,7 +191,7 @@ export default {
                 description: '',
                 capacity: 0,
                 client: '',
-                headCoach: '',
+                headCoach: null,
                 positions: [],
                 displayPositions: [
                     {
@@ -292,7 +292,7 @@ export default {
                 description: '',
                 capacity: 0,
                 client: '',
-                headCoach: '',
+                headCoach: null,
                 positions: [],
                 displayPositions: [
                     {
@@ -308,9 +308,11 @@ export default {
                 description: this.creationModalForm.description,
                 capacity: +this.creationModalForm.capacity,
                 client: this.creationModalForm.client,
-                headCoach: this.creationModalForm.headCoach,
                 positions: this.creationModalForm.displayPositions,
             }
+
+            if (this.creationModalForm.headCoach)
+                body.headCoach = this.creationModalForm.headCoach
 
             body.positions.forEach((_, i) => {
                 body.positions[i].amount = +body.positions[i].amount
