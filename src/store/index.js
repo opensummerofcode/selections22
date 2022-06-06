@@ -39,6 +39,9 @@ export default new Vuex.Store({
         isProjectPhaseEnabled() {
             return process.env.VUE_APP_PROJECT_PHASE.toUpperCase() === 'TRUE'
         },
+        getProjects(state) {
+            return state.projects
+        },
     },
     mutations: {
         SET_SHOW_PROJECTS(state, value) {
@@ -59,6 +62,9 @@ export default new Vuex.Store({
         },
         SET_PROJECTS(state, value) {
             state.projects = value
+        },
+        ADD_PROJECT(state, value) {
+            state.projects = [...state.projects, value]
         },
     },
     actions: {

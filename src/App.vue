@@ -46,6 +46,15 @@
                     v-if="getUser.roles.includes('ROLE_ADMIN')"
                     class="is-tab"
                     tag="router-link"
+                    :to="{ name: 'projects' }"
+                    :active="$route.name == 'projects'"
+                >
+                    Manage projects
+                </b-navbar-item>
+                <b-navbar-item
+                    v-if="getUser.roles.includes('ROLE_ADMIN')"
+                    class="is-tab"
+                    tag="router-link"
                     :to="{ name: 'users' }"
                     :active="$route.name == 'users'"
                 >

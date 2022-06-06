@@ -8,6 +8,7 @@ import SignIn from './components/SignIn.vue'
 import SignUp from './components/SignUp.vue'
 import MainApp from './components/MainApp'
 import Members from './components/Members'
+import Projects from './components/Projects'
 import Pipeline from './components/Pipeline'
 import cookies from './utils/cookies'
 import axios from 'axios'
@@ -20,7 +21,9 @@ const beforeEnter = async (to, from, next) => {
             if (to.name.startsWith('sign')) {
                 next({ name: 'home' })
             } else if (
-                (to.name === 'users' || to.name === 'pipeline') &&
+                (to.name === 'users' ||
+                    to.name === 'pipeline' ||
+                    to.name === 'projects') &&
                 !store.state.user.roles.includes('ROLE_ADMIN')
             ) {
                 next({ name: 'home' })
@@ -42,6 +45,12 @@ const routes = [
     { path: '/signup', name: 'signup', component: SignUp, beforeEnter: beforeEnter },
     { path: '/', name: 'home', component: MainApp, beforeEnter: beforeEnter },
     { path: '/users', name: 'users', component: Members, beforeEnter: beforeEnter },
+    {
+        path: '/projects',
+        name: 'projects',
+        component: Projects,
+        beforeEnter: beforeEnter,
+    },
     {
         path: '/pipeline',
         name: 'pipeline',

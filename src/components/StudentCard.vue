@@ -67,6 +67,9 @@
                 </b-tag>
             </div>
         </div>
+        <b-tag type="is-info" class="mt-2">
+            {{ dateFormat(student.createdAt) }}
+        </b-tag>
     </div>
 </template>
 <script>
@@ -124,6 +127,10 @@ export default {
     methods: {
         startDrag(event) {
             event.dataTransfer.setData('student', this.student.id)
+        },
+        dateFormat(date) {
+            const utc = new Date(date)
+            return `${utc.getDate()}/${utc.getMonth() + 1}/${utc.getFullYear()}`
         },
     },
 }
