@@ -24,8 +24,11 @@
                         />
                     </template>
                     <template v-if="column.field === 'headCoach'" #default="props">
-                        {{ props.row.headCoach.firstname }}
-                        {{ props.row.headCoach.lastname }}
+                        {{
+                            props.row.headCoach
+                                ? `${props.row.headCoach.firstname} ${props.row.headCoach.lastname}`
+                                : ''
+                        }}
                     </template>
                     <template v-else-if="column.field === 'actions'" #default="props">
                         <b-button type="is-danger" @click="openDeleteModal(props.row)">
