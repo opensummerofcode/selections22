@@ -27,10 +27,17 @@
                         {{
                             props.row.headCoach
                                 ? `${props.row.headCoach.firstname} ${props.row.headCoach.lastname}`
-                                : ''
+                                : 'N/A'
                         }}
                     </template>
                     <template v-else-if="column.field === 'actions'" #default="props">
+                        <b-button
+                            type="is-success"
+                            class="mr-2"
+                            @click="openEditModal(props.row)"
+                        >
+                            Edit
+                        </b-button>
                         <b-button type="is-danger" @click="openDeleteModal(props.row)">
                             Delete
                         </b-button>
@@ -58,9 +65,10 @@
                     </b-field>
                     <b-field label="Head Coach">
                         <b-select v-model="creationModalForm.headCoach" expanded>
+                            <option :value="null"></option>
                             <option
                                 v-for="coach in coaches"
-                                :key="coach.email"
+                                :key="coach['@id']"
                                 :value="coach['@id']"
                             >
                                 {{ coach.firstname }} {{ coach.lastname }}
@@ -136,6 +144,101 @@
             </div>
         </b-modal>
         <b-modal
+            v-if="projectToEdit"
+            v-model="editModal"
+            width="640px"
+            :on-cancel="closeEditModal"
+        >
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Edit {{ projectToEdit.title }}</p>
+                    <button type="button" class="delete" @click="closeEditModal" />
+                </header>
+                <section class="modal-card-body">
+                    <b-field label="Name of the project (required)">
+                        <b-input v-model="projectToEdit.title" type="text" />
+                    </b-field>
+                    <b-field label="Client (required)">
+                        <b-input v-model="projectToEdit.client" type="text" />
+                    </b-field>
+                    <b-field label="Head Coach">
+                        <b-select v-model="projectToEdit.headCoach" expanded>
+                            <option :value="null">N/A</option>
+                            <option
+                                v-for="coach in coaches"
+                                :key="coach['@id']"
+                                :value="coach['@id']"
+                            >
+                                {{ coach.firstname }} {{ coach.lastname }}
+                            </option>
+                        </b-select>
+                    </b-field>
+                    <b-field label="Description">
+                        <b-input
+                            v-model="projectToEdit.description"
+                            type="textarea"
+                            rows="4"
+                        />
+                    </b-field>
+                    <b-field label="Number of students">
+                        <b-input
+                            v-model="projectToEdit.capacity"
+                            type="number"
+                            :min="0"
+                        />
+                    </b-field>
+                    <b-field label="Positions" class="positions_field">
+                        <div class="positions">
+                            <div
+                                v-for="(position, index) in projectToEdit.positions"
+                                :key="'position_row_' + index"
+                                class="positions-row"
+                                :class="{ 'mt-3': index > 0 }"
+                            >
+                                <b-input
+                                    v-model="position.amount"
+                                    type="number"
+                                    :min="1"
+                                />
+                                <b-autocomplete
+                                    v-model="position.title"
+                                    type="text"
+                                    :data="filteredRoles"
+                                    dropdown-position="auto"
+                                    :open-on-focus="true"
+                                    @typing="getFilteredRoles"
+                                />
+                                <b-button
+                                    :disabled="projectToEdit.positions.length < 2"
+                                    @click="removePositionFromEditProject(index)"
+                                >
+                                    <b-icon icon="close" />
+                                </b-button>
+                            </div>
+                        </div>
+                    </b-field>
+                    <b-button
+                        label="Add position"
+                        type="is-primary"
+                        class="add-positions-button"
+                        @click="addPositionRowToEditProject"
+                    />
+                    <!-- <b-field label="Coaches">
+                        <b-input type="text" />
+                    </b-field> -->
+                </section>
+                <footer class="modal-card-foot">
+                    <b-button
+                        label="Save project"
+                        type="is-success"
+                        :disabled="editModalSubmitDisabled"
+                        @click="editProject"
+                    />
+                    <b-button label="Cancel" @click="closeEditModal" />
+                </footer>
+            </div>
+        </b-modal>
+        <b-modal
             v-if="projectToDelete"
             v-model="deleteModal"
             width="640px"
@@ -184,6 +287,8 @@ export default {
         return {
             projectToDelete: null,
             deleteModal: false,
+            projectToEdit: null,
+            editModal: false,
             filteredRoles: roles,
             coaches: [],
             checked_rows: [],
@@ -216,6 +321,15 @@ export default {
                 )
             )
         },
+        editModalSubmitDisabled() {
+            return (
+                tools.isEmptyStr(this.projectToEdit.title) ||
+                tools.isEmptyStr(this.projectToEdit.client) ||
+                this.projectToEdit.positions.some((position) =>
+                    tools.isEmptyStr(position.title)
+                )
+            )
+        },
         columns() {
             return [
                 {
@@ -243,6 +357,7 @@ export default {
                 {
                     field: 'actions',
                     label: '',
+                    numeric: true,
                 },
             ]
         },
@@ -261,6 +376,37 @@ export default {
         closeDeleteModal() {
             this.deleteModal = false
             this.projectToDelete = null
+        },
+        openEditModal(project) {
+            this.projectToEdit = project
+            this.editModal = true
+        },
+        closeEditModal() {
+            this.editModal = false
+            this.projectToEdit = null
+        },
+        editProject() {
+            const body = {
+                title: this.projectToEdit.title,
+                description: this.projectToEdit.description,
+                capacity: +this.projectToEdit.capacity,
+                client: this.projectToEdit.client,
+                positions: this.projectToEdit.positions,
+            }
+
+            if (this.projectToEdit.headCoach)
+                body.headCoach = this.projectToEdit.headCoach.hasOwnProperty('@id')
+                    ? this.projectToEdit.headCoach['@id']
+                    : this.projectToEdit.headCoach
+
+            body.positions.forEach((_, i) => {
+                body.positions[i].amount = +body.positions[i].amount
+            })
+
+            this.$axios.put(this.projectToEdit['@id'], body).then((_) => {
+                this.fetchProjects()
+                this.closeEditModal()
+            })
         },
         deleteProject() {
             this.$axios.delete(this.projectToDelete['@id']).then((_) => {
@@ -308,15 +454,15 @@ export default {
         },
         createProject() {
             const body = {
-                title: this.creationModalForm.title,
-                description: this.creationModalForm.description,
-                capacity: +this.creationModalForm.capacity,
-                client: this.creationModalForm.client,
-                positions: this.creationModalForm.displayPositions,
+                title: this.projectToEdit.title,
+                description: this.projectToEdit.description,
+                capacity: +this.projectToEdit.capacity,
+                client: this.projectToEdit.client,
+                positions: this.projectToEdit.positions,
             }
 
-            if (this.creationModalForm.headCoach)
-                body.headCoach = this.creationModalForm.headCoach
+            if (this.projectToEdit.headCoach)
+                body.headCoach = this.projectToEdit.headCoach
 
             body.positions.forEach((_, i) => {
                 body.positions[i].amount = +body.positions[i].amount
@@ -333,8 +479,17 @@ export default {
                 amount: 1,
             })
         },
+        addPositionRowToEditProject() {
+            this.projectToEdit.positions.push({
+                title: '',
+                amount: 1,
+            })
+        },
         removePosition(index) {
             this.creationModalForm.displayPositions.splice(index, 1)
+        },
+        removePositionFromEditProject(index) {
+            this.projectToEdit.positions.splice(index, 1)
         },
     },
 }
