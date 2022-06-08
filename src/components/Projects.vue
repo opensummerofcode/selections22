@@ -454,15 +454,15 @@ export default {
         },
         createProject() {
             const body = {
-                title: this.projectToEdit.title,
-                description: this.projectToEdit.description,
-                capacity: +this.projectToEdit.capacity,
-                client: this.projectToEdit.client,
-                positions: this.projectToEdit.positions,
+                title: this.creationModalForm.title,
+                description: this.creationModalForm.description,
+                capacity: +this.creationModalForm.capacity,
+                client: this.creationModalForm.client,
+                positions: this.creationModalForm.positions,
             }
 
-            if (this.projectToEdit.headCoach)
-                body.headCoach = this.projectToEdit.headCoach
+            if (this.creationModalForm.headCoach)
+                body.headCoach = this.creationModalForm.headCoach
 
             body.positions.forEach((_, i) => {
                 body.positions[i].amount = +body.positions[i].amount
