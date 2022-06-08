@@ -48,7 +48,12 @@
                 </b-table-column>
             </template>
         </b-table>
-        <b-modal v-model="creationModal" width="640px" :on-cancel="closeCreationModal">
+        <b-modal
+            v-model="creationModal"
+            width="640px"
+            :on-cancel="closeCreationModal"
+            :can-cancel="['x']"
+        >
             <div class="modal-card">
                 <header class="modal-card-head">
                     <p class="modal-card-title">
@@ -147,6 +152,7 @@
             v-if="projectToEdit"
             v-model="editModal"
             width="640px"
+            :can-cancel="['x']"
             :on-cancel="closeEditModal"
         >
             <div class="modal-card">
