@@ -94,6 +94,7 @@
                             :min="0"
                         />
                     </b-field>
+
                     <b-field label="Positions" class="positions_field">
                         <div class="positions">
                             <div
@@ -133,9 +134,40 @@
                         class="add-positions-button"
                         @click="addPositionRow"
                     />
-                    <!-- <b-field label="Coaches">
-                        <b-input type="text" />
-                    </b-field> -->
+
+                    <b-field label="Coaches" class="coaches_field">
+                        <div class="coaches">
+                            <div
+                                v-for="(user, index) in creationModalForm.users"
+                                :key="`project_coach_${index}`"
+                                class="coaches-row"
+                                :class="{ 'mt-3': index > 0 }"
+                            >
+                                <b-select
+                                    v-model="creationModalForm.users[index]"
+                                    expanded
+                                >
+                                    <option :value="null">N/A</option>
+                                    <option
+                                        v-for="coach in coaches"
+                                        :key="`project_coach_${index}_${coach['@id']}`"
+                                        :value="coach['@id']"
+                                    >
+                                        {{ coach.firstname }} {{ coach.lastname }}
+                                    </option>
+                                </b-select>
+                                <b-button @click="removeCoachFromNewProject(index)">
+                                    <b-icon icon="close" />
+                                </b-button>
+                            </div>
+                        </div>
+                    </b-field>
+                    <b-button
+                        label="Add coach"
+                        type="is-primary"
+                        class="add-positions-button"
+                        @click="addCoachRowToNewProject"
+                    />
                 </section>
                 <footer class="modal-card-foot">
                     <b-button
@@ -172,7 +204,7 @@
                             <option :value="null">N/A</option>
                             <option
                                 v-for="coach in coaches"
-                                :key="coach['@id']"
+                                :key="`project_headcoach_${coach['@id']}`"
                                 :value="coach['@id']"
                             >
                                 {{ coach.firstname }} {{ coach.lastname }}
@@ -193,6 +225,7 @@
                             :min="0"
                         />
                     </b-field>
+
                     <b-field label="Positions" class="positions_field">
                         <div class="positions">
                             <div
@@ -226,12 +259,40 @@
                     <b-button
                         label="Add position"
                         type="is-primary"
-                        class="add-positions-button"
+                        class="add-positions-button mb-3"
                         @click="addPositionRowToEditProject"
                     />
-                    <!-- <b-field label="Coaches">
-                        <b-input type="text" />
-                    </b-field> -->
+
+                    <b-field label="Coaches" class="coaches_field">
+                        <div class="coaches">
+                            <div
+                                v-for="(user, index) in projectToEdit.users"
+                                :key="`project_coach_${index}`"
+                                class="coaches-row"
+                                :class="{ 'mt-3': index > 0 }"
+                            >
+                                <b-select v-model="projectToEdit.users[index]" expanded>
+                                    <option :value="null">N/A</option>
+                                    <option
+                                        v-for="coach in coaches"
+                                        :key="`project_coach_${index}_${coach['@id']}`"
+                                        :value="coach['@id']"
+                                    >
+                                        {{ coach.firstname }} {{ coach.lastname }}
+                                    </option>
+                                </b-select>
+                                <b-button @click="removeCoachFromEditProject(index)">
+                                    <b-icon icon="close" />
+                                </b-button>
+                            </div>
+                        </div>
+                    </b-field>
+                    <b-button
+                        label="Add coach"
+                        type="is-primary"
+                        class="add-positions-button"
+                        @click="addCoachRowToEditProject"
+                    />
                 </section>
                 <footer class="modal-card-foot">
                     <b-button
@@ -313,6 +374,7 @@ export default {
                         amount: 1,
                     },
                 ],
+                users: [null],
             },
         }
     },
@@ -385,6 +447,16 @@ export default {
         },
         openEditModal(project) {
             this.projectToEdit = project
+            if (this.projectToEdit.headCoach) {
+                this.projectToEdit.headCoach = project.headCoach['@id']
+            }
+            if (!this.projectToEdit.users || !this.projectToEdit.users.length) {
+                this.projectToEdit.users = [null]
+            } else {
+                this.projectToEdit.users.forEach((user, i) => {
+                    this.projectToEdit.users[i] = user['@id']
+                })
+            }
             this.editModal = true
         },
         closeEditModal() {
@@ -398,6 +470,7 @@ export default {
                 capacity: +this.projectToEdit.capacity,
                 client: this.projectToEdit.client,
                 positions: this.projectToEdit.positions,
+                users: this.projectToEdit.users,
             }
 
             if (this.projectToEdit.headCoach)
@@ -456,6 +529,7 @@ export default {
                         amount: 1,
                     },
                 ],
+                users: [null],
             }
         },
         createProject() {
@@ -465,6 +539,7 @@ export default {
                 capacity: +this.creationModalForm.capacity,
                 client: this.creationModalForm.client,
                 positions: this.creationModalForm.positions,
+                users: this.creationModalForm.users,
             }
 
             if (this.creationModalForm.headCoach)
@@ -491,11 +566,29 @@ export default {
                 amount: 1,
             })
         },
+        addCoachRowToEditProject() {
+            this.projectToEdit.users.push(null)
+        },
+        addCoachRowToNewProject() {
+            this.creationModalForm.users.push(null)
+        },
         removePosition(index) {
             this.creationModalForm.displayPositions.splice(index, 1)
         },
         removePositionFromEditProject(index) {
             this.projectToEdit.positions.splice(index, 1)
+        },
+        removeCoachFromEditProject(index) {
+            this.projectToEdit.users.splice(index, 1)
+            if (!this.projectToEdit.users.length) {
+                this.projectToEdit.users.push(null)
+            }
+        },
+        removeCoachFromNewProject(index) {
+            this.creationModalForm.users.splice(index, 1)
+            if (!this.creationModalForm.users.length) {
+                this.creationModalForm.users.push(null)
+            }
         },
     },
 }
@@ -508,6 +601,23 @@ export default {
 
     .table-wrapper {
         height: 80vh !important;
+    }
+}
+
+.coaches_field {
+    .field {
+        width: 100%;
+    }
+
+    .coaches {
+        width: 100%;
+
+        .coaches-row {
+            display: grid;
+            grid-template-columns: auto max-content;
+            column-gap: 0.75rem;
+            width: 100%;
+        }
     }
 }
 

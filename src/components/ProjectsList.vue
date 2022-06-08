@@ -28,10 +28,11 @@
             class="projects-grid"
             :class="{ 'is-fullscreen px-4': !selectedStudent }"
         >
-            <project-card />
-            <project-card />
-            <project-card />
-            <project-card />
+            <project-card
+                v-for="project in $store.state.projects"
+                :key="project['@id']"
+                :project="project"
+            />
         </div>
     </div>
 </template>

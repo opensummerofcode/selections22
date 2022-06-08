@@ -35,7 +35,7 @@
             </template>
             <template v-if="getUser" #end>
                 <b-switch
-                    v-if="isProjectPhaseEnabled"
+                    v-if="isProjectPhaseEnabled && $route.name == 'home'"
                     :value="showProjects"
                     type="is-primary"
                     @input="SET_SHOW_PROJECTS"

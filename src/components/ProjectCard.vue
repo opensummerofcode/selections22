@@ -1,53 +1,51 @@
 <template>
-    <b-collapse
-        v-model="isOpen"
-        class="card project-card"
-        animation="none"
-        :class="{ 'mx-5 mb-6': selectedStudent }"
-    >
-        <template #trigger>
-            <div class="pb-4" @drop="onDrop($event)" @dragover.prevent>
-                <div
-                    class="columns p-2 pb-0 mx-0 project-header"
-                    :class="{ 'has-shadow': isOpen }"
-                    role="button"
-                    aria-controls="contentIdForA11y3"
-                    :aria-expanded="isOpen"
-                >
-                    <div class="column is-half">
-                        <a
-                            href="#"
-                            class="is-size-3 has-text-weight-semibold is-flex is-align-items-center is-justify-content-flex-start"
-                        >
-                            Project name
-                            <b-icon icon="link" custom-class="mb-1 ml-2 link-icon" />
-                        </a>
-                        <h4 class="is-size-5">Partner</h4>
-                        <b-taglist class="mt-5">
-                            <b-tag>Coach#1</b-tag>
-                            <b-tag>Coach#2</b-tag>
-                        </b-taglist>
-                    </div>
-                    <div
-                        class="column is-half has-text-right is-flex is-flex-direction-column is-align-items-flex-end"
+    <div class="card project-card" :class="{ 'mx-5 mb-6': selectedStudent }">
+        <div class="pb-4" @drop="onDrop($event)" @dragover.prevent>
+            <div
+                class="columns p-2 pb-0 mx-0 project-header"
+                :class="{ 'has-shadow': isOpen }"
+                role="button"
+                aria-controls="contentIdForA11y3"
+                :aria-expanded="isOpen"
+            >
+                <div class="column is-half">
+                    <h2
+                        href="#"
+                        class="is-size-3 has-text-weight-semibold is-flex is-align-items-center is-justify-content-flex-start"
                     >
-                        <b-tag class="mb-1 has-text-weight-bold">
-                            1x full-stack developer
+                        {{ project.title }}
+                    </h2>
+                    <h4 class="is-size-5">{{ project.client }}</h4>
+                    <p class="is-size-6" v-html="replaceURLs(project.description)" />
+                    <b-taglist class="mt-5">
+                        <b-tag v-if="project.headCoach">
+                            {{ project.headCoach.firstname }}
                         </b-tag>
-                        <b-tag class="mb-1 has-text-weight-bold">2x communication</b-tag>
-                        <b-tag class="mb-1 has-text-weight-bold">1x data-scientist</b-tag>
-                        <b-tag class="mb-1 has-text-weight-bold">2x designer</b-tag>
-                    </div>
-                </div>
-                <div v-if="!isOpen" class="px-4 mb-2">
-                    <b-taglist>
-                        <b-tag v-for="student in students" :key="student.id">
-                            {{ student.firstname }} {{ student.lastname }}
+                        <b-tag v-for="coach in project.users" :key="coach['@id']">
+                            {{ coach.firstname }}
                         </b-tag>
                     </b-taglist>
                 </div>
+                <div
+                    class="column is-half has-text-right is-flex is-flex-direction-column is-align-items-flex-end"
+                >
+                    <b-tag
+                        v-for="(position, i) in project.positions"
+                        :key="`project_${project['@id']}_position_${i}`"
+                        class="mb-1 has-text-weight-bold"
+                    >
+                        {{ position.amount }}x {{ position.title }}
+                    </b-tag>
+                </div>
             </div>
-        </template>
+            <div v-if="!isOpen" class="px-4 mb-2">
+                <b-taglist>
+                    <b-tag v-for="student in students" :key="student.id">
+                        {{ student.firstname }} {{ student.lastname }}
+                    </b-tag>
+                </b-taglist>
+            </div>
+        </div>
         <div class="p-4" @drop="onDrop($event)" @dragover.prevent>
             <student-card
                 v-for="(student, i) in students"
@@ -138,15 +136,22 @@
                 </footer>
             </div>
         </b-modal>
-    </b-collapse>
+    </div>
 </template>
 <script>
 import StudentCard from './StudentCard.vue'
 import { mapGetters } from 'vuex'
+import tools from '../utils/tools'
 
 export default {
     name: 'ProjectCard',
     components: { StudentCard },
+    props: {
+        project: {
+            type: Object,
+            required: true,
+        },
+    },
     data() {
         return {
             isOpen: false,
@@ -197,6 +202,9 @@ export default {
                 radio: null,
                 reason: null,
             }
+        },
+        replaceURLs(string) {
+            return tools.replaceURLs(string)
         },
     },
 }
