@@ -470,8 +470,14 @@ export default {
                 capacity: +this.projectToEdit.capacity,
                 client: this.projectToEdit.client,
                 positions: this.projectToEdit.positions,
-                users: this.projectToEdit.users,
             }
+
+            this.projectToEdit.users.forEach((user) => {
+                if (user) {
+                    if (!body.hasOwnProperty('users')) body.users = []
+                    body.users.push(user)
+                }
+            })
 
             if (this.projectToEdit.headCoach)
                 body.headCoach = this.projectToEdit.headCoach.hasOwnProperty('@id')
@@ -539,8 +545,14 @@ export default {
                 capacity: +this.creationModalForm.capacity,
                 client: this.creationModalForm.client,
                 positions: this.creationModalForm.positions,
-                users: this.creationModalForm.users,
             }
+
+            this.creationModalForm.users.forEach((user) => {
+                if (user) {
+                    if (!body.hasOwnProperty('users')) body.users = []
+                    body.users.push(user)
+                }
+            })
 
             if (this.creationModalForm.headCoach)
                 body.headCoach = this.creationModalForm.headCoach
