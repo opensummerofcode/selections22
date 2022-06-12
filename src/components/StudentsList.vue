@@ -75,6 +75,18 @@
                     Undecided ({{ allUndecided }})
                 </b-checkbox-button>
             </b-field>
+            <div class="is-flex mb-2">
+                <b-taginput
+                    v-model="student_filters.decisions"
+                    autocomplete
+                    open-on-focus
+                    placeholder="Select roles"
+                    :data="filteredDecisions"
+                    class="is-flex-grow-1 mr-3"
+                    @typing="getFilteredDecisions"
+                />
+                <b-button @click="clearDecisions">Clear</b-button>
+            </div>
         </div>
         <div class="cards-container p-4">
             <student-card
@@ -105,11 +117,43 @@ const roles = [
     'Other',
 ]
 
+const decisions = [
+    {
+        label: 'Screening',
+        value: 'SCREENING',
+    },
+    {
+        label: 'No, rejected',
+        value: 'REJECTED',
+    },
+    {
+        label: 'Maybe, awaiting project',
+        value: 'AWAITING_MAYBE',
+    },
+    {
+        label: 'Yes, awaiting project',
+        value: 'AWAITING_YES',
+    },
+    {
+        label: 'Yes, assigned project',
+        value: 'APPROVED',
+    },
+    {
+        label: 'Confirmed contract and project',
+        value: 'CONFIRMED',
+    },
+    {
+        label: 'Declined contract',
+        value: 'DECLINED',
+    },
+]
+
 export default {
     name: 'StudentsList',
     components: { StudentCard },
     data: function() {
         return {
+            filteredDecisions: decisions.map((decision) => decision.label),
             filteredRoles: roles,
             student_filters: {
                 search: '',
@@ -119,6 +163,7 @@ export default {
                 unmatched: false,
                 suggested: false,
                 status: ['yes', 'maybe', 'no', 'undecided'],
+                decisions: [],
             },
         }
     },
@@ -179,6 +224,20 @@ export default {
                     })
                 }
 
+                if (!shouldBeIn) return false
+
+                if (this.student_filters.decisions.length) {
+                    shouldBeIn = false
+                    this.student_filters.decisions.forEach((decision) => {
+                        let decisionValue = decisions.find(
+                            (dec) => dec.label === decision
+                        ).value
+                        if (student.status == decisionValue) {
+                            shouldBeIn = true
+                        }
+                    })
+                }
+
                 return shouldBeIn
             })
 
@@ -225,8 +284,23 @@ export default {
                 )
             })
         },
+        getFilteredDecisions(text) {
+            this.filteredDecisions = decisions
+                .filter((option) => {
+                    return (
+                        option.label
+                            .toString()
+                            .toLowerCase()
+                            .indexOf(text.toLowerCase()) >= 0
+                    )
+                })
+                .map((decision) => decision.label)
+        },
         clearRoles() {
             this.student_filters.roles = []
+        },
+        clearDecisions() {
+            this.student_filters.decisions = []
         },
         showStudent(student) {
             this.SET_SELECTED_STUDENT(student['@id'])
