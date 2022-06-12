@@ -171,7 +171,7 @@ export default {
             }
         },
         removeStudent(id) {
-            this.$axios.get(project['@id']).then((pr) => {
+            this.$axios.get(this.project['@id']).then((pr) => {
                 let applicants = pr.data.applicants.map((app) => {
                     let returnApp = {}
                     returnApp.applicant = app.applicant
