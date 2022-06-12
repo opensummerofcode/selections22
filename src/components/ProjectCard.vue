@@ -171,7 +171,14 @@ export default {
             }
         },
         removeStudent(id) {
-            let applicants = [...this.project.applicants]
+            let applicants = this.project.applicants.map((app) => {
+                let returnApp = {}
+                returnApp.applicant = app.applicant
+                if (app.reason) returnApp.reason = app.reason
+                if (app.position) returnApp.position = app.position
+
+                return returnApp
+            })
 
             let index = applicants.findIndex((applicant) => applicant.applicant === id)
 
@@ -190,8 +197,17 @@ export default {
             if (this.modal.radio) applicant.position = this.modal.radio
             if (this.modal.reason) applicant.reason = this.modal.reason
 
+            const previousApplicants = this.project.applicants.map((app) => {
+                let returnApp = {}
+                returnApp.applicant = app.applicant
+                if (app.reason) returnApp.reason = app.reason
+                if (app.position) returnApp.position = app.position
+
+                return returnApp
+            })
+
             const body = {
-                applicants: [...this.project.applicants, applicant],
+                applicants: [...previousApplicants, applicant],
             }
 
             this.$axios.put(this.project['@id'], body).then((res) => {
