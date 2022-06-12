@@ -252,7 +252,14 @@ export default {
             this.$emit('removeStudent')
         },
         removeDraft(project) {
-            let applicants = [...project.applicants]
+            let applicants = project.applicants.map((app) => {
+                let returnApp = {}
+                returnApp.applicant = app.applicant
+                if (app.reason) returnApp.reason = app.reason
+                if (app.position) returnApp.position = app.position
+
+                return returnApp
+            })
 
             let index = applicants.findIndex((app) => {
                 return app.applicant == this.student['@id']
