@@ -77,8 +77,12 @@ export default {
                 exp.setHours(exp.getHours() + 1)
 
                 cookies.set('json_web_token', res.data.token, exp)
-                cookies.set('jwt_expiration', exp)
-                cookies.set('refresh_token', res.data.refresh_token)
+                cookies.set('jwt_expiration', exp, 'Tue, 19 Jan 2038 04:14:07 GMT')
+                cookies.set(
+                    'refresh_token',
+                    res.data.refresh_token,
+                    'Tue, 19 Jan 2038 04:14:07 GMT'
+                )
 
                 this.$axios.get('api/me').then((user_res) => {
                     this.SET_USER(user_res.data)

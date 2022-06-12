@@ -171,50 +171,56 @@ export default {
             }
         },
         removeStudent(id) {
-            let applicants = this.project.applicants.map((app) => {
-                let returnApp = {}
-                returnApp.applicant = app.applicant
-                if (app.reason) returnApp.reason = app.reason
-                if (app.position) returnApp.position = app.position
+            this.$axios.get(project['@id']).then((pr) => {
+                let applicants = pr.data.applicants.map((app) => {
+                    let returnApp = {}
+                    returnApp.applicant = app.applicant
+                    if (app.reason) returnApp.reason = app.reason
+                    if (app.position) returnApp.position = app.position
 
-                return returnApp
-            })
+                    return returnApp
+                })
 
-            let index = applicants.findIndex((applicant) => applicant.applicant === id)
+                let index = applicants.findIndex(
+                    (applicant) => applicant.applicant === id
+                )
 
-            applicants.splice(index, 1)
+                applicants.splice(index, 1)
 
-            const body = { applicants }
+                const body = { applicants }
 
-            this.$axios.put(this.project['@id'], body).then((res) => {
-                this.UPDATE_PROJECT(res.data)
-                this.fetchStudents()
+                this.$axios.put(this.project['@id'], body).then((res) => {
+                    this.UPDATE_PROJECT(res.data)
+                    this.fetchStudents()
+                })
             })
         },
         draftStudent() {
-            const applicant = { applicant: this.draggedStudent['@id'] }
+            this.$axios.get(this.project['@id']).then((pr) => {
+                const applicant = { applicant: this.draggedStudent['@id'] }
 
-            if (this.modal.radio) applicant.position = this.modal.radio
-            if (this.modal.reason) applicant.reason = this.modal.reason
+                if (this.modal.radio) applicant.position = this.modal.radio
+                if (this.modal.reason) applicant.reason = this.modal.reason
 
-            const previousApplicants = this.project.applicants.map((app) => {
-                let returnApp = {}
-                returnApp.applicant = app.applicant
-                if (app.reason) returnApp.reason = app.reason
-                if (app.position) returnApp.position = app.position
+                let previousApplicants = pr.data.applicants.map((app) => {
+                    let returnApp = {}
+                    returnApp.applicant = app.applicant
+                    if (app.reason) returnApp.reason = app.reason
+                    if (app.position) returnApp.position = app.position
 
-                return returnApp
-            })
+                    return returnApp
+                })
 
-            const body = {
-                applicants: [...previousApplicants, applicant],
-            }
+                const body = {
+                    applicants: [...previousApplicants, applicant],
+                }
 
-            this.$axios.put(this.project['@id'], body).then((res) => {
-                this.UPDATE_PROJECT(res.data)
-                this.fetchStudents()
-                this.parseApplicants()
-                this.closeModal()
+                this.$axios.put(this.project['@id'], body).then((res) => {
+                    this.UPDATE_PROJECT(res.data)
+                    this.fetchStudents()
+                    this.parseApplicants()
+                    this.closeModal()
+                })
             })
         },
         closeModal() {

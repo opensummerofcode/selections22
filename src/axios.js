@@ -24,8 +24,12 @@ instance.interceptors.request.use(
                     exp.setHours(exp.getHours() + 1)
 
                     cookies.set('json_web_token', res.data.token, exp)
-                    cookies.set('jwt_expiration', exp)
-                    cookies.set('refresh_token', res.data.refresh_token)
+                    cookies.set('jwt_expiration', exp, 'Tue, 19 Jan 2038 04:14:07 GMT')
+                    cookies.set(
+                        'refresh_token',
+                        res.data.refresh_token,
+                        'Tue, 19 Jan 2038 04:14:07 GMT'
+                    )
 
                     config.headers['Authorization'] = `Bearer ${res.data.token}`
 

@@ -252,27 +252,28 @@ export default {
             this.$emit('removeStudent')
         },
         removeDraft(project) {
-            let applicants = project.applicants.map((app) => {
-                let returnApp = {}
-                returnApp.applicant = app.applicant
-                if (app.reason) returnApp.reason = app.reason
-                if (app.position) returnApp.position = app.position
+            this.$axios.get(project['@id']).then((pr) => {
+                let applicants = pr.data.applicants.map((app) => {
+                    let returnApp = {}
+                    returnApp.applicant = app.applicant
+                    if (app.reason) returnApp.reason = app.reason
+                    if (app.position) returnApp.position = app.position
 
-                return returnApp
-            })
+                    return returnApp
+                })
 
-            let index = applicants.findIndex((app) => {
-                return app.applicant == this.student['@id']
-            })
+                let index = applicants.findIndex((app) => {
+                    return app.applicant == this.student['@id']
+                })
 
-            applicants.splice(index, 1)
+                applicants.splice(index, 1)
 
-            const body = { applicants }
+                const body = { applicants }
 
-            this.$axios.put(project['@id'], body).then((res) => {
-                this.UPDATE_PROJECT(res.data)
-                this.fetchStudents()
-                this.parseApplicants()
+                this.$axios.put(project['@id'], body).then((res) => {
+                    this.UPDATE_PROJECT(res.data)
+                    this.fetchStudents()
+                })
             })
         },
     },
