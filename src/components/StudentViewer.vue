@@ -37,8 +37,12 @@
                 </div>
             </div>
             <div class="column" :class="{ 'has-text-right': !showProjects }">
-                <b-tag v-if="hasProject" class="mr-1">
-                    {{ student.project.title }}
+                <b-tag
+                    v-for="project in student.projects"
+                    :key="`student_viewer_project_${project.project}`"
+                    class="mr-1"
+                >
+                    {{ project.project_details.title }}
                 </b-tag>
                 <b-tag v-if="student.applicantDetails.isAlumni" class="mr-1">
                     osoc Alumnus

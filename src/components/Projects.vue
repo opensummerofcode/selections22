@@ -98,8 +98,7 @@
                     <b-field label="Positions" class="positions_field">
                         <div class="positions">
                             <div
-                                v-for="(position,
-                                index) in creationModalForm.displayPositions"
+                                v-for="(position, index) in creationModalForm.positions"
                                 :key="'position_row_' + index"
                                 class="positions-row"
                                 :class="{ 'mt-3': index > 0 }"
@@ -118,9 +117,7 @@
                                     @typing="getFilteredRoles"
                                 />
                                 <b-button
-                                    :disabled="
-                                        creationModalForm.displayPositions.length < 2
-                                    "
+                                    :disabled="creationModalForm.positions.length < 2"
                                     @click="removePosition(index)"
                                 >
                                     <b-icon icon="close" />
@@ -367,8 +364,7 @@ export default {
                 capacity: 0,
                 client: '',
                 headCoach: null,
-                positions: [],
-                displayPositions: [
+                positions: [
                     {
                         title: '',
                         amount: 1,
@@ -384,7 +380,7 @@ export default {
             return (
                 tools.isEmptyStr(this.creationModalForm.title) ||
                 tools.isEmptyStr(this.creationModalForm.client) ||
-                this.creationModalForm.displayPositions.some((position) =>
+                this.creationModalForm.positions.some((position) =>
                     tools.isEmptyStr(position.title)
                 )
             )
@@ -436,7 +432,7 @@ export default {
     },
     methods: {
         ...mapActions(['fetchProjects']),
-        ...mapMutations(['ADD_PROJECT']),
+        ...mapMutations(['ADD_PROJECT', 'UPDATE_PROJECT']),
         openDeleteModal(project) {
             this.projectToDelete = project
             this.deleteModal = true
@@ -459,9 +455,12 @@ export default {
             }
             this.editModal = true
         },
-        closeEditModal() {
+        closeEditModal(_, didEdit = false) {
             this.editModal = false
             this.projectToEdit = null
+            if (!didEdit) {
+                this.fetchProjects()
+            }
         },
         editProject() {
             const body = {
@@ -488,9 +487,9 @@ export default {
                 body.positions[i].amount = +body.positions[i].amount
             })
 
-            this.$axios.put(this.projectToEdit['@id'], body).then((_) => {
-                this.fetchProjects()
-                this.closeEditModal()
+            this.$axios.put(this.projectToEdit['@id'], body).then((res) => {
+                this.UPDATE_PROJECT(res.data)
+                this.closeEditModal(true)
             })
         },
         deleteProject() {
@@ -528,8 +527,7 @@ export default {
                 capacity: 0,
                 client: '',
                 headCoach: null,
-                positions: [],
-                displayPositions: [
+                positions: [
                     {
                         title: '',
                         amount: 1,
@@ -567,7 +565,7 @@ export default {
             })
         },
         addPositionRow() {
-            this.creationModalForm.displayPositions.push({
+            this.creationModalForm.positions.push({
                 title: '',
                 amount: 1,
             })
@@ -585,7 +583,7 @@ export default {
             this.creationModalForm.users.push(null)
         },
         removePosition(index) {
-            this.creationModalForm.displayPositions.splice(index, 1)
+            this.creationModalForm.positions.splice(index, 1)
         },
         removePositionFromEditProject(index) {
             this.projectToEdit.positions.splice(index, 1)

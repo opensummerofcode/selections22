@@ -1,22 +1,21 @@
 <template>
     <div class="card project-card" :class="{ 'mx-5 mb-6': selectedStudent }">
         <div class="pb-4" @drop="onDrop($event)" @dragover.prevent>
-            <div
-                class="columns p-2 pb-0 mx-0 project-header"
-                :class="{ 'has-shadow': isOpen }"
-                role="button"
-                aria-controls="contentIdForA11y3"
-                :aria-expanded="isOpen"
-            >
+            <div class="columns p-2 pb-0 mx-0 project-header has-shadow" role="button">
                 <div class="column is-half">
                     <h2
                         href="#"
-                        class="is-size-3 has-text-weight-semibold is-flex is-align-items-center is-justify-content-flex-start"
+                        class="is-size-3 has-text-weight-semibold is-flex is-align-items-center is-justify-content-flex-start mb-0"
                     >
                         {{ project.title }}
                     </h2>
-                    <h4 class="is-size-5">{{ project.client }}</h4>
-                    <p class="is-size-6" v-html="replaceURLs(project.description)" />
+                    <h4 class="is-size-5 has-text-weight-semibold">
+                        {{ project.client }}
+                    </h4>
+                    <h4 class="is-size-5">
+                        {{ project.applicants.length }}/{{ project.capacity }} students
+                    </h4>
+                    <p class="is-size-6 mt-5" v-html="replaceURLs(project.description)" />
                     <b-taglist class="mt-5">
                         <b-tag v-if="project.headCoach">
                             {{ project.headCoach.firstname }}
@@ -38,23 +37,16 @@
                     </b-tag>
                 </div>
             </div>
-            <div v-if="!isOpen" class="px-4 mb-2">
-                <b-taglist>
-                    <b-tag v-for="student in students" :key="student.id">
-                        {{ student.firstname }} {{ student.lastname }}
-                    </b-tag>
-                </b-taglist>
-            </div>
         </div>
         <div class="p-4" @drop="onDrop($event)" @dragover.prevent>
             <student-card
-                v-for="(student, i) in students"
-                :key="`${student.id}_card`"
+                v-for="student in displayApplicants"
+                :key="`project_${project['@id']}_${student.id}_card`"
                 in-project
                 :student="student"
-                @removeStudent="removeStudent(i)"
+                @removeStudent="removeStudent(student['@id'])"
             />
-            <p v-if="!students.length" class="is-size-6 has-text-centered">
+            <p v-if="!project.applicants.length" class="is-size-6 has-text-centered">
                 No students yet, drag one from the list on the left to draft them
             </p>
         </div>
@@ -80,36 +72,14 @@
                     >
                         <div class="is-flex is-flex-direction-column">
                             <b-radio
+                                v-for="(position, i) in project.positions"
+                                :key="`project_${project['@id']}_position_${i}_in_modal`"
                                 v-model="modal.radio"
-                                native-value="full-stack developer"
                                 size="is-small"
                                 class="mb-2 has-text-weight-bold is-size-6"
+                                :native-value="position.title"
                             >
-                                1x full-stack developer
-                            </b-radio>
-                            <b-radio
-                                v-model="modal.radio"
-                                native-value="communication"
-                                size="is-small"
-                                class="mb-2 has-text-weight-bold is-size-6"
-                            >
-                                2x communication
-                            </b-radio>
-                            <b-radio
-                                v-model="modal.radio"
-                                native-value="data scientist"
-                                size="is-small"
-                                class="mb-2 has-text-weight-bold is-size-6"
-                            >
-                                1x data scientist
-                            </b-radio>
-                            <b-radio
-                                v-model="modal.radio"
-                                native-value="designers"
-                                size="is-small"
-                                class="mb-2 has-text-weight-bold is-size-6"
-                            >
-                                2x designer
+                                {{ position.amount }}x {{ position.title }}
                             </b-radio>
                         </div>
                     </b-field>
@@ -128,7 +98,6 @@
                     <b-button
                         label="Draft to project"
                         type="is-success"
-                        :disabled="!modal.radio || !modal.reason"
                         @click="draftStudent"
                     />
                     <b-button label="Cancel" @click="closeModal" />
@@ -140,7 +109,7 @@
 </template>
 <script>
 import StudentCard from './StudentCard.vue'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import tools from '../utils/tools'
 
 export default {
@@ -154,46 +123,83 @@ export default {
     },
     data() {
         return {
-            isOpen: false,
-            students: [],
             isModalOpen: false,
             draggedStudent: null,
             modal: {
                 radio: null,
                 reason: null,
             },
+            displayApplicants: [],
         }
     },
     computed: {
         ...mapGetters(['selectedStudent', 'allStudents']),
     },
-    mounted() {
-        if (!this.selectedStudent) {
-            this.isOpen = true
-        }
+    watch: {
+        allStudents() {
+            this.parseApplicants()
+        },
     },
-    // watch: {
-    //     draggedStudent(val) {
-    //         if (val) this.isModalOpen = true
-    //     }
-    // },
+    mounted() {
+        this.parseApplicants()
+    },
     methods: {
+        ...mapActions(['fetchStudents']),
+        ...mapMutations(['UPDATE_PROJECT']),
+        parseApplicants() {
+            this.displayApplicants = []
+            this.project.applicants.forEach((applicant, i) => {
+                let student = {
+                    ...this.allStudents.find((student) => {
+                        return student['@id'] === applicant.applicant
+                    }),
+                }
+                Object.assign(student, applicant)
+                this.displayApplicants.push(student)
+            })
+        },
         onDrop(event) {
             const studentId = event.dataTransfer.getData('student')
-            if (this.students.find((student) => student.id === studentId) == undefined) {
+            if (
+                this.project.applicants.find((student) => student['@id'] === studentId) ==
+                undefined
+            ) {
                 this.draggedStudent = this.allStudents.find(
                     (student) => student.id === studentId
                 )
-                if (!this.isOpen) this.isOpen = true
                 this.isModalOpen = true
             }
         },
-        removeStudent(index) {
-            this.students.splice(index, 1)
+        removeStudent(id) {
+            let applicants = [...this.project.applicants]
+
+            let index = applicants.findIndex((applicant) => applicant.applicant === id)
+
+            applicants.splice(index, 1)
+
+            const body = { applicants }
+
+            this.$axios.put(this.project['@id'], body).then((res) => {
+                this.UPDATE_PROJECT(res.data)
+                this.fetchStudents()
+            })
         },
         draftStudent() {
-            this.students.push(this.draggedStudent)
-            this.closeModal()
+            const applicant = { applicant: this.draggedStudent['@id'] }
+
+            if (this.modal.radio) applicant.position = this.modal.radio
+            if (this.modal.reason) applicant.reason = this.modal.reason
+
+            const body = {
+                applicants: [...this.project.applicants, applicant],
+            }
+
+            this.$axios.put(this.project['@id'], body).then((res) => {
+                this.UPDATE_PROJECT(res.data)
+                this.fetchStudents()
+                this.parseApplicants()
+                this.closeModal()
+            })
         },
         closeModal() {
             this.isModalOpen = false

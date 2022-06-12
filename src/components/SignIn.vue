@@ -55,17 +55,19 @@ export default {
         return {
             email: null,
             password: null,
+            isSubmitting: false,
         }
     },
     computed: {
         submitDisabled() {
-            return !this.email || !this.password
+            return !this.email || !this.password || this.isSubmitting
         },
     },
     methods: {
         ...mapMutations(['SET_USER']),
         signIn(event) {
             event.preventDefault()
+            this.isSubmitting = true
             const body = {
                 email: this.email,
                 password: this.password,

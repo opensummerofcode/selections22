@@ -48,7 +48,7 @@
                             <b-button
                                 type="is-primary"
                                 class="is-block is-fullwidth"
-                                :disabled="submitted || submitDisabled"
+                                :disabled="submitDisabled"
                                 native-type="submit"
                             >
                                 Sign up
@@ -99,20 +99,27 @@ export default {
             lastname: null,
             email: null,
             password: null,
-            submitted: false,
+            isSubmitting: false,
             confirmed: false,
             error: false,
         }
     },
     computed: {
         submitDisabled() {
-            return !this.email || !this.password || !this.firstname || !this.lastname
+            return (
+                !this.email ||
+                !this.password ||
+                !this.firstname ||
+                !this.lastname ||
+                this.isSubmitting
+            )
         },
     },
     methods: {
         ...mapMutations(['SET_USER']),
         signUp(event) {
             event.preventDefault()
+            this.isSubmitting = true
             const body = {
                 firstname: this.firstname,
                 lastname: this.lastname,

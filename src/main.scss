@@ -6,10 +6,15 @@
 $info: #3e8ed0;
 
 // Set your colors
-$primary: #00d1b2;
+$primary: #485fc7;
 $primary-light: findLightColor($primary);
 $primary-dark: findDarkColor($primary);
 $primary-invert: findColorInvert($primary);
+
+$link: #485fc7;
+$link-light: findLightColor($link);
+$link-dark: findDarkColor($link);
+$link-invert: findColorInvert($link);
 
 $tabs-toggle-link-active-background-color: $blue;
 $tabs-toggle-link-active-background-color: $blue;

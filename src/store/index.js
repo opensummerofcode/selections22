@@ -14,6 +14,7 @@ const getDefaultState = () => {
         students: [],
         projects: [],
         user: null,
+        conflictStudents: [],
     }
 }
 
@@ -22,6 +23,9 @@ const state = getDefaultState()
 export default new Vuex.Store({
     state,
     getters: {
+        conflictStudents(state) {
+            return state.conflictStudents
+        },
         showProjects(state) {
             return state.showProjects
         },
@@ -60,11 +64,21 @@ export default new Vuex.Store({
         SET_STUDENTS(state, value) {
             state.students = value
         },
+        SET_CONFLICT_STUDENTS(state, value) {
+            state.conflictStudents = value
+        },
         SET_PROJECTS(state, value) {
             state.projects = value
         },
         ADD_PROJECT(state, value) {
             state.projects = [...state.projects, value]
+        },
+        UPDATE_PROJECT(state, value) {
+            let index = state.projects.findIndex(
+                (project) => project['@id'] === value['@id']
+            )
+
+            Object.assign(state.projects[index], value)
         },
     },
     actions: {
@@ -83,6 +97,7 @@ export default new Vuex.Store({
             router.push({ name: 'signin' })
         },
         fetchStudents(context) {
+            let conflictStudents = []
             axios.get('/api/applicant_details').then((details_res) => {
                 const details = details_res.data['hydra:member']
                 axios.get('/api/applicants').then((applicants_res) => {
@@ -110,18 +125,30 @@ export default new Vuex.Store({
                             }
                         })
 
-                        if (!yes && !maybe && !no)
+                        if (!yes && !maybe && !no) {
                             applicant.suggestion_status = 'undecided'
-                        else if (yes > maybe && yes > no)
+                        } else if (yes > maybe && yes > no) {
                             applicant.suggestion_status = 'yes'
-                        else if (maybe > yes && maybe > no)
+                        } else if (maybe > yes && maybe > no) {
                             applicant.suggestion_status = 'maybe'
-                        else if (no > yes && no > maybe)
+                        } else if (no > yes && no > maybe) {
                             applicant.suggestion_status = 'no'
-                        else if (maybe == yes || maybe == no || yes == no)
+                        } else if (maybe == yes || maybe == no || yes == no) {
                             applicant.suggestion_status = 'maybe'
+                        }
+
+                        applicant.projects.forEach((project, i) => {
+                            applicant.projects[i].project_details = state.projects.find(
+                                (p) => p['@id'] == project.project
+                            )
+                        })
+
+                        if (applicant.projects.length >= 2) {
+                            conflictStudents.push(applicant)
+                        }
                     })
                     context.commit('SET_STUDENTS', applicants)
+                    context.commit('SET_CONFLICT_STUDENTS', conflictStudents)
                 })
             })
         },
