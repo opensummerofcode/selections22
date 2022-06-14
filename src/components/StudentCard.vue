@@ -17,28 +17,25 @@
                 class="is-flex is-justify-content-space-between mb-2 is-align-items-flex-start"
                 :class="{ 'column is-half': inConflict }"
             >
-                <h2
-                    v-if="!inConflict"
-                    class="has-text-weight-bold"
+                <h1
+                    v-if="inConflict || inProject"
+                    class="has-text-weight-semibold student-name"
                     :class="{
                         'is-size-6': inProject,
-                        'is-size-5': !inProject,
+                        'is-size-3': !inProject,
                     }"
                 >
-                    {{ callname }} {{ student.lastname }}
+                    <a @click="showStudent">{{ callname }} {{ student.lastname }}</a>
                     <b-tag
                         v-if="inProject && student.position"
                         class="has-text-weight-normal"
                     >
                         {{ student.position }}
                     </b-tag>
-                </h2>
-                <h1
-                    v-if="inConflict"
-                    class="is-size-3 has-text-weight-semibold student-name"
-                >
-                    <a @click="showStudent">{{ callname }} {{ student.lastname }}</a>
                 </h1>
+                <h2 v-else class="is-size-5 has-text-weight-bold">
+                    {{ callname }} {{ student.lastname }}
+                </h2>
                 <h3 v-if="inConflict" class="is-size-5 mb-5">
                     {{ paperworkName || '' }}
                     {{ paperworkName && student.pronouns ? ' – ' : '' }}
@@ -138,10 +135,7 @@
                         }}{{ drafting.reason ? `: ${drafting.reason}` : '' }}
                     </h5>
                 </div>
-                <b-button
-                    class="is-flex-grow-0"
-                    @click="removeDraft(drafting.project_details)"
-                >
+                <b-button class="is-flex-grow-0" @click="removeDraft(drafting)">
                     <b-icon icon="close" />
                 </b-button>
             </div>
@@ -245,36 +239,21 @@ export default {
             return `${utc.getDate()}/${utc.getMonth() + 1}/${utc.getFullYear()}`
         },
         showStudent() {
-            this.SET_SELECTED_STUDENT(this.student['@id'])
+            this.SET_SELECTED_STUDENT(this.student?.applicant || this.student['@id'])
         },
         removeStudentEmitter() {
             this.isDeleting = true
             this.$emit('removeStudent')
         },
-        removeDraft(project) {
-            this.$axios.get(project['@id']).then((pr) => {
-                let applicants = pr.data.applicants.map((app) => {
-                    let returnApp = {}
-                    returnApp.applicant = app.applicant
-                    if (app.reason) returnApp.reason = app.reason
-                    if (app.position) returnApp.position = app.position
-
-                    return returnApp
-                })
-
-                let index = applicants.findIndex((app) => {
-                    return app.applicant == this.student['@id']
-                })
-
-                applicants.splice(index, 1)
-
-                const body = { applicants }
-
-                this.$axios.put(project['@id'], body).then((res) => {
+        removeDraft(draft) {
+            console.log(draft)
+            this.$axios.delete(draft['@id']).then((_) => {
+                this.$axios.get(draft.project).then((res) => {
                     this.UPDATE_PROJECT(res.data)
                     this.fetchStudents()
                 })
             })
+            return
         },
     },
 }

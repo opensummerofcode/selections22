@@ -40,11 +40,11 @@
         </div>
         <div class="p-4" @drop="onDrop($event)" @dragover.prevent>
             <student-card
-                v-for="student in displayApplicants"
-                :key="`project_${project['@id']}_${student.id}_card`"
+                v-for="draft in displayApplicants"
+                :key="`project_${project['@id']}_${draft.applicant}_card`"
                 in-project
-                :student="student"
-                @removeStudent="removeStudent(student['@id'])"
+                :student="draft"
+                @removeStudent="removeStudent(draft)"
             />
             <p v-if="!project.applicants.length" class="is-size-6 has-text-centered">
                 No students yet, drag one from the list on the left to draft them
@@ -133,7 +133,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['selectedStudent', 'allStudents']),
+        ...mapGetters(['selectedStudent', 'allStudents', 'getUser']),
     },
     watch: {
         allStudents() {
@@ -170,52 +170,26 @@ export default {
                 this.isModalOpen = true
             }
         },
-        removeStudent(id) {
-            this.$axios.get(this.project['@id']).then((pr) => {
-                let applicants = pr.data.applicants.map((app) => {
-                    let returnApp = {}
-                    returnApp.applicant = app.applicant
-                    if (app.reason) returnApp.reason = app.reason
-                    if (app.position) returnApp.position = app.position
-
-                    return returnApp
-                })
-
-                let index = applicants.findIndex(
-                    (applicant) => applicant.applicant === id
-                )
-
-                applicants.splice(index, 1)
-
-                const body = { applicants }
-
-                this.$axios.put(this.project['@id'], body).then((res) => {
+        removeStudent(draft) {
+            this.$axios.delete(draft['@id']).then((_) => {
+                this.$axios.get(this.project['@id']).then((res) => {
                     this.UPDATE_PROJECT(res.data)
                     this.fetchStudents()
                 })
             })
         },
         draftStudent() {
-            this.$axios.get(this.project['@id']).then((pr) => {
-                const applicant = { applicant: this.draggedStudent['@id'] }
+            let draft = {
+                applicant: this.draggedStudent['@id'],
+                project: this.project['@id'],
+                drafter: `/api/users/${this.getUser.id}`,
+            }
 
-                if (this.modal.radio) applicant.position = this.modal.radio
-                if (this.modal.reason) applicant.reason = this.modal.reason
+            if (this.modal.radio) draft.position = this.modal.radio
+            if (this.modal.reason) draft.reason = this.modal.reason
 
-                let previousApplicants = pr.data.applicants.map((app) => {
-                    let returnApp = {}
-                    returnApp.applicant = app.applicant
-                    if (app.reason) returnApp.reason = app.reason
-                    if (app.position) returnApp.position = app.position
-
-                    return returnApp
-                })
-
-                const body = {
-                    applicants: [...previousApplicants, applicant],
-                }
-
-                this.$axios.put(this.project['@id'], body).then((res) => {
+            this.$axios.post('/api/drafts', draft).then((_) => {
+                this.$axios.get(this.project['@id']).then((res) => {
                     this.UPDATE_PROJECT(res.data)
                     this.fetchStudents()
                     this.parseApplicants()
