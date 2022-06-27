@@ -1,0 +1,5 @@
+[context.production.environment]
+  VUE_APP_API_URL = "https://selections-tool.herokuapp.com"
+  VUE_APP_PROJECT_PHASE = "true"
+  VUE_APP_PIPELINE_ENABLED = "true"
+  VUE_APP_DELETE_STUDENTS_ENABLED = "false"
